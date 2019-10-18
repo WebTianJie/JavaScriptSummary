@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	<script src="myJQuery.js"></script>
+	<style type="text/css">
+		.demo{
+			height:40px;
+			width:40px;
+			border:#000000 solid 2px;
+		}
+	</style>
+	<!--<script src="jquery.2.1.4.js"></script>-->
+	<script src="myJQuery.js"></script>
+	</head>
+	<body>
+		<div id="wrapper" class="wrapper">
+			<div class="demo"><button class="button">11</button></div>
+			<div class="demo"><button class="button">22</button></div>
+			<div class="demo">3</div>
+			<div class="demo">4</div>
+		</div>
+	</body>
+	<script>
+//		$('.demo').myon('myclick',function(a,b,c){
+//			console.log(a,b,c);
+//		});
+//		$('.demo').mytrigger('myclick',1,2,3)
+//     $('.demo').myqueue('chain',function(next){
+//	       	console.log(1);
+//	       	next();
+//     }).myqueue('chain',function(next){
+//	       	console.log(2);
+//	       	next();
+//     }).myqueue('chain',function(next){
+//	       	console.log(3);
+//	       	next();
+//     }).myqueue('chain',function(){
+//	       	console.log(4);
+//     })
+//		$('.demo').css({position:'absolute',left:'50px',top:'50px',width:'100px',height:'100px'})
+//		.myanimate({left:'100px',top:'200px'}).mydelay(2000)
+//		.myanimate({left:'150px',top:'250px'}).mydelay(2000)
+//		.myanimate({left:'200px',top:'300px'})
+		
+//		var  cb=$.myCallBacks();
+//		var  cb=$.myCallBacks('once');
+		var  cb=$.myCallBacks('memory');
+		function a(x,y){
+			console.log('a',x,y);
+			return false;
+		}
+		function b(x,y){
+			console.log('b',x,y); 
+		}
+		cb.add(a,b);
+		cb.fire(10,20);
+		cb.fire(10,20);
+		function c(x,y){
+			console.log('c',x,y);
+		}
+		cb.add(c);
+	</script>
+</html>

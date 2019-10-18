@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+		<p id="myp"></p>
+		<div class=" demo demo1 demo3 con      con4 con5 ">ssss</div>
+		<div class=" demo demo1 demo3 con      con4 con5 ">sssssfafsdsafd</div>
+		<span></span>
+		<span></span>
+	</body>
+	<script>
+		//获取元素的主函数
+		function getDom(str){
+			if(str==null||str.length==0){
+				return null;
+			}
+			if(str.indexOf('#')>-1){
+				return getDomById(str);
+			}else if(str.indexOf('.')>-1){
+				var reg=/^\.\w*/g;
+				if(reg.test(str)){
+					str=str.replace('.','');
+				  getDomByClass(str);
+				}
+			}else{
+				return document.getElementsByTagName(str);
+			}
+		}
+		//根据id获取元素
+		function getDomById(id){
+			var reg=/^#\w*/g;
+			if(reg.test(id)){
+				var id=id.slice(1);
+			   return 	document.getElementById(id);
+			}
+		}
+		//根据类名获取函数
+		function getDomByClass(_className) {
+				//Element.prototype.getDomByClassName = Document.prototype.geDomByClassName = document.getElementsByClassName || function(className) {
+				//}
+				var allDomArray = document.getElementsByTagName('*');
+				var domArray = [];
+				for(var i = 0; i < allDomArray.length; i++) {
+					if(allDomArray[i].className.length > 0) {
+						var classArr = delMoreSpace(allDomArray[i].className).split(' ');
+						for(var j = 0; j < classArr.length; j++) {
+							if(classArr[j] == _className) {
+								domArray.push(allDomArray[i])
+							}
+						}
+					}
+				}
+				return domArray;
+
+		}
+		//去除字符串的首尾空格
+		function trimspace(str) {
+			var reg = /(^\s*)|(\s*$)/g;
+			var tempStr = str.replace(reg, function($, $1, $2) {
+				return '';
+			});
+			return tempStr;
+		}
+		//字符串的多个连续空格合并为一个
+		function delMoreSpace(_classStr) {
+			var reg = /(\s)\1*/g;
+			var tepStr = _classStr.replace(reg, function($, $1) {
+				return $1;
+			});
+			tepStr = trimspace(tepStr);
+			return tepStr;
+		}
+		getDom('#id');
+		getDom('.className');
+		getDom('div');
+	</script>
+
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			.drag{
+				width: 100px;height: 200px;float: left;
+			}
+			 li{
+				height: 30px;margin-top:10px;background:#f40;list-style: none;text-align: center;line-height: center;
+			}
+			.container{overflow: auto;
+				width: 100px;height: 300px;border:#ccc solid 1px;position:absolute;left: 50%; top: 50%;transform: translateX(-50%) translateY(-50%);
+			}
+		</style>
+	</head>
+	<body>
+		<div class="drag">
+			<ul>
+				<li>1</li>
+				<li>2</li>
+				<li>3</li>
+				<li>4</li>
+				<li>5</li>
+				<li>6</li>
+				<li>7</li>
+				<li>8</li>
+				<li>9</li>
+				<li>10</li>
+			</ul>
+		</div>
+		<div class="container">
+			
+		</div>
+		<script type="text/javascript">
+			var listAarry=document.getElementsByTagName('li');
+			var dragArea=document.getElementsByClassName('container')[0];
+			var dragTarget=null;
+			for(var i=0;i<listAarry.length;i++){
+				listAarry[i].setAttribute('draggable',true);
+				listAarry[i].ondrag=function(e){
+					dragTarget=e.target;
+				}
+			}
+			dragArea.ondragover=function(e){
+				e.preventDefault();
+			}
+			dragArea.ondrop=function(e){
+				dragArea.appendChild(dragTarget);
+			}
+		</script>
+	</body>
+</html>

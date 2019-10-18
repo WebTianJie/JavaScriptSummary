@@ -1,0 +1,57 @@
+*{list-style: none;padding:0;margin:0;}
+.wrapper{
+	padding:10px 15px;
+	border-radius: 4px;
+	width:400px;
+	border:#ccc solid 1px;
+	margin:100px auto 0px;
+}
+.wrapper .sWrapper{
+	margin-bottom:20px;
+}
+.wrapper .sWrapper .sText{
+	width:220px;
+	height:25px;
+	padding-left:10px;
+	outline: none;
+	border-radius: 4px;
+	border:#777 solid 1px;
+}
+
+.wrapper .sWrapper .btn{
+	cursor: ponter;
+	color: #3c8dff;
+	padding:0px 5px;
+}
+.wrapper .sWrapper .btn.active{
+	color: #fff;
+	background:#3c8dff;
+	border-radius: 4px;
+}
+.wrapper .flWrapper{
+	
+}
+.wrapper .flWrapper ul{
+	
+}
+.wrapper .flWrapper ul li{
+	position:relative;
+	border-bottom:#999 solid 1px;
+	padding-bottom:10px;
+	padding-left:50px;
+	padding-top:10px;
+}
+.wrapper .flWrapper ul li img{
+	position:absolute;
+	left: 0;
+	top:12px;
+	height:45px;
+	width:45px;
+}
+.wrapper .flWrapper ul li .name{
+	margin-bottom:10px;
+}
+.wrapper .flWrapper ul li .des{
+	font-size:12px;
+	color:#666;
+}

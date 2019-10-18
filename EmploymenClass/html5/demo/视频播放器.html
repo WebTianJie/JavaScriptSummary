@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>视频播放器</title>
+		<style type="text/css">
+			html{height: 100%;}
+			body{height: 100%;}
+			*{margin:0;padding:0;}
+			.video_player{
+				height: 500px;
+				width:1000px;
+				position:relative;
+				/*left: 50%;*/
+				/*transform: translateX(-50%) translateY(50%);*/
+			}
+			video{
+				position:absolute;
+				width:1000px;
+				height:500px;
+				left: 0;
+				top:0;
+			}
+			.menu{
+				position:absolute;
+				width:100%;
+				height: 50px;
+				background: #333;
+				bottom:0;
+				display: none;
+			}
+			.play{position: absolute;
+				width:60px;
+				height: 30px;
+				text-align: center;
+				border:1px solid  white;
+				line-height:30px;
+				color:white;
+				border-radius: 10px;
+				margin-left:20px;
+				top:50%;
+				margin-top:-15px;
+				cursor: pointer;
+			}
+			.time{
+				width:100px;
+				height: 30px;
+				text-align: center;
+				line-height:30px;
+				color:white;
+				border-radius: 10px;
+				margin-left:100px;
+				top:50%;
+				margin-top:15px;
+				cursor: pointer;
+			}
+			.progress{
+				position: absolute;
+				width:100%;
+				height: 2px;
+				background:#000;
+				left:0;
+				top: -2px;
+			}
+			.bar{position: absolute;
+				width:0px;
+				height: 2px;
+				background:orange;
+				left:0;
+				top: 0px;}
+			.progress i{
+				position:absolute;
+				width: 6px;
+				height:6px;
+				border-radius: 3px;
+				background: white;
+				left: 0px;
+				top: -2px;
+			}
+			.quick{
+				position:absolute;
+				width: 60px;
+				height:30px;
+				border:1px solid white;
+				text-align: center;
+				line-height: 30px;
+				border-radius: 10px;
+				color: white;
+				left: 300px;
+				top: 50%;
+				margin-top: -15px;
+				cursor: pointer;
+			}
+			.quick-list{
+				position:absolute;
+				width: 80px;
+				height:120px;
+				left: 300px;
+				top: -100px;
+				background:#333;
+				margin-top: -15px;
+				color:white;
+				display: none;
+			}
+			.quick-list li{
+				position: relative;
+				width:100%;
+				height:30px;
+				text-align: center;
+				line-height:30px;
+				list-style: none;
+				cursor: pointer;
+			}
+			.voice{
+				position:absolute;
+				width: 60px;
+				height:30px;
+				border:1px solid white;
+				text-align: center;
+				line-height: 30px;
+				border-radius: 10px;
+				color: white;
+				left: 400px;
+				top: 50%;
+				margin-top: -15px;
+				cursor: pointer;
+			}
+			.voice-min{left: 500px;}
+			.fullsreen{
+				position:absolute;
+				width: 60px;
+				height:30px;
+				border:1px solid white;
+				text-align: center;
+				line-height: 30px;
+				border-radius: 10px;
+				color: white;
+				left: 800px;
+				top: 50%;
+				margin-top: -15px;
+				cursor: pointer;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="video_player">
+			<video src="video.mp4"></video>
+			<div class="menu">
+				<div class="play">播放</div>
+				<div class="time">0.00/0.00</div>
+				<div class="progress">
+					<div class="bar"></div>
+					<i></i>
+				</div>
+				<div class="quick">倍速</div>
+				<div class="quick-list">
+					<ul>
+						<li>正常</li>
+						<li>1.25倍</li>
+						<li>1.5倍</li>
+						<li>2倍</li>
+					</ul>
+				</div>
+				<div class="voice voice-add">音量+</div>
+				<div class="voice voice-min">音量-</div>
+				<div class="fullsreen">全屏</div>
+			</div>
+		</div>
+		<script>
+			var videoPlayer=document.getElementsByClassName('video_player')[0];
+			var  video=videoPlayer.getElementsByTagName('video')[0];
+			var menu=document.getElementsByClassName('menu')[0];
+			var btnPlay=menu.children[0];
+			var timespan=menu.children[1];
+			var progress=menu.children[2];
+			var quick=document.getElementsByClassName('quick')[0];
+			var quickList=document.getElementsByClassName('quick-list')[0];
+			var iList=quickList.getElementsByTagName('li');
+			var voiceAdd=document.getElementsByClassName('voice-add')[0];
+			var voiceMin=document.getElementsByClassName('voice-min')[0];
+			var fullscreen=document.getElementsByClassName('fullsreen')[0];
+			videoPlayer.onmouseenter=function(){
+				menu.style.display="block";
+			}
+			videoPlayer.onmouseleave=function(){
+				menu.style.display="none";
+			}
+			//播放/暂停
+			btnPlay.onclick=function(){
+				if(video.paused){
+					video.play();
+					this.innerHTML="暂停";
+				}else{
+					video.pause();
+					this.innerHTML="播放";
+				}
+				
+			}
+			//进度条
+			progress.onmouseenter=function(){
+				progress.style.height="14px";
+				progress.style.top="-14px";
+				progress.getElementsByClassName('bar')[0].style.height="14px";
+				progress.getElementsByTagName('i')[0].style.height="18px";
+			}
+			progress.onmouseleave=function(){
+				progress.style.height="2px";
+				progress.style.top="-2px";
+				progress.getElementsByClassName('bar')[0].style.height="2px";
+				progress.getElementsByTagName('i')[0].style.height="6px";
+			}
+			progress.onclick=function(e){
+				var  local=e.layerX;
+				var  width=progress.clientWidth;
+				var  targetTime=local/width*video.duration;
+				video.currentTime=targetTime;
+				
+			}
+			//倍速
+			quick.onclick=function(){
+				quickList.style.display="block";
+			}
+			quickList.onmouseleave=function(){
+				this.style.display="none";
+			}
+			for(var i=0;i<iList.length;i++){
+				(function(i){
+					iList[i].onclick=function(){
+						if(i==0){
+							video.playbackRate=1;
+							quick.innerHTML='正常';
+						}else if(i==1){
+							video.playbackRate=1.25;
+						}else if(i==2){
+							video.playbackRate=1.25;
+						}else{
+							video.playbackRate=2;
+						}
+						i==0?'':quick.innerHTML=video.playbackRate+'X倍';
+					}
+				})(i)
+			}
+			//音量加减
+			voiceAdd.onclick=function(){
+				video.volume=video.volume+0.1>1?1:video.volume+0.1;
+			}
+			voiceMin.onclick=function(){
+				video.volume=video.volume-0.1<=0?0:video.volume-0.1;
+			}
+			//全屏
+			fullscreen.onclick=function(){
+				var dom=document.documentElement;
+				dom.requestFullscreen();
+				videoPlayer.style.width=window.screen.width+'px';
+				videoPlayer.style.height=window.screen.height+'px';
+				video.style.width=window.screen.width+'px';
+				video.style.height=window.screen.height+'px';
+			}
+			setInterval(function(){
+				var currTime=video.currentTime;
+				var totalTime=video.duration;
+				timespan.innerHTML=parseInt(currTime/60)+' : '+parseInt(currTime%60)+' / '+parseInt(totalTime/60)+' : '+parseInt(totalTime%60);
+				var barwidth=currTime/totalTime*progress.clientWidth;
+				progress.getElementsByClassName('bar')[0].style.width=barwidth+"px";
+				progress.getElementsByTagName('i')[0].style.left=barwidth+"px";
+			},1000)
+		</script>
+	</body>
+</html>

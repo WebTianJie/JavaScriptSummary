@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>fullpage</title>
+		<link rel="stylesheet" type="text/css" href="css/fullpage.css"/>
+		<script src="http://www.youluwx.com/TG/JsResource/jquery.1.8.3.min.js"></script>
+		<script src="js/fullpage.js"></script>
+		<style type="text/css">
+			.section:nth-child(1){
+				background:red;
+			}
+			.section:nth-child(2){
+				background:yellow;
+			}
+			.section:nth-child(3){
+				background:green;
+			}
+			.section:nth-child(4){
+				background:black;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="fullpage">
+			<div class="section">
+				<div class="slide">1</div>
+				<div class="slide">2</div>
+				<div class="slide">3</div>
+			</div>
+			<div class="section">Some section2</div>
+			<div class="section">Some section3</div>
+			<div class="section">Some section4</div>
+		</div>
+	</body>
+	<script>
+		$(document).ready(function() {
+			$('#fullpage').fullpage({
+				//options here
+				autoScrolling:true,
+				scrollHorizontally: true,
+				afterLoad:function(anchor,index){
+					console.log(index.index);
+				},
+				onLeave:function(currIndex,nextIndex){
+					console.log(currIndex.index,nextIndex.index);
+				}
+			});
+		
+			//methods
+			$.fn.fullpage.setAllowScrolling(false);
+		});
+	</script>
+</html>

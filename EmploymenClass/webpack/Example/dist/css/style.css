@@ -1,0 +1,16 @@
+.box {
+  width: 600px;
+  height: 300px;
+  margin: 0 auto;
+  border: 1px solid #fff;
+  transform: rotate(250deg);
+}
+
+.box p {
+  color: green;
+  font-size: 36px;
+  text-align: center;
+  line-height: 300px;
+  width: 300px;
+  background: url(../img/1a875d.png) 50% no-repeat;
+}

@@ -1,0 +1,1 @@
+!function(){function t(t){var o=new Audio;return this.status="pause",o}t.prototype.play=function(){this.play(),this.status="play"},t.prototype.pause=function(){this.pause(),this.status="pause"},t.prototype.getAudio=function(t){this.src=t,this.load()},root.audioManager=t}(window.Zepto,window.player||(window.player={}));

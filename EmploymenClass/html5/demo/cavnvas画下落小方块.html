@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			canvas{width:500px;height:300px;border-bottom:#000 solid 3px;}
+		</style>
+	</head>
+	<body>
+		<canvas id="canvas" width="500px" height="300px"></canvas>
+	</body>
+	<script type="text/javascript">
+		var canvas=document.getElementById('canvas');
+		var cts=canvas.getContext('2d');
+		var height=10;
+		var step=5;
+		var timer=setInterval(function(){
+			if(height>=250){
+			 step=-5;
+			}
+			if(height<0){
+				 //step=5;
+			    clearInterval(timer);
+			}
+			height+=step;
+			cts.clearRect(0,0,500,300);
+			cts.fillRect(50,height,50,50);
+		},1000/60)
+	</script>
+</html>

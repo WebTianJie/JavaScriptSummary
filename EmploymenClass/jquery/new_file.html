@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="jquery.2.1.4.js"></script>
+		<style>
+			{}
+        body {
+            height: 3000px;
+        }
+
+        #editInfo {
+            width: 100px;
+            height: 100px;
+            border: 1px black solid;
+            position: absolute;
+        }
+    </style>
+	</head>
+	<body>
+		<div id="editInfo"></div>
+	</body>
+	<script>
+			(function(obj){
+				initPosition();
+				var editHeight=$('#editInfo').css('top');
+				$( window ).scroll( function(){
+					var top =$( document ).scrollTop();
+					obj.css({top:top +parseInt(editHeight)+'px'});
+				})
+				function initPosition(){
+					var width=$(window).width()+16;
+					var height=$(window).height();
+					var left=width/2-50;
+					var top=height/2-20;
+					obj.css({ left:left +'px',top:top +'px'});
+				}
+			})($('#editInfo'))
+	</script>
+
+</html>

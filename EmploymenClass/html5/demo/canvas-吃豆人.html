@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			canvas{width:500px;height:300px;border-bottom:#000 solid 3px;}
+		</style>
+	</head>
+	<body>
+		<canvas id="canvas" width="500px" height="300px"></canvas>
+	</body>
+	<script type="text/javascript">
+		//arc(100,100,50,0,Math.PI/2,0);
+		var canvas=document.getElementById('canvas');
+		var cts=canvas.getContext('2d');
+		cts.moveTo(100,100);
+		cts.arc(100,100,100,0,Math.PI*1.8,0);
+		cts.fill();
+		cts.stroke();
+	</script>
+</html>

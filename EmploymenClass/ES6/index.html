@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>数据劫持</title>
+	</head>
+
+	<body>
+		<input type="text" name="" id="search" value="" />
+		<button id="btn">提交</button>
+	</body>
+	<!--<script type="text/javascript"src="demo.js"></script>-->
+	<script type="text/javascript"src="myPromise.js"></script>
+	<script>
+		let op=new MyPromise((res,rej)=>{
+//			throw new Error('北冥');
+			// setTimeout(()=>{
+			// 	rej(0);
+			// },2000)
+			res(0);
+		})
+		op.then((res)=>{
+			console.log(res,'ok');
+			 //throw new Error('北冥');
+			  return new MyPromise((res,rej)=>{
+				  res(0);
+			  });
+		},(rej)=>{
+			console.log(rej);
+		}).then((res)=>{
+			console.log(res,"after 空then",'ok2');
+		},(rej)=>{
+			console.log(reason,"after 空then",'no2');
+		})
+	</script>
+
+</html>

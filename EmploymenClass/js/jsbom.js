@@ -1,0 +1,34 @@
+// 快速掌握bom对象 broswer object model,浏览器对象模型
+// window是bom的顶层核心对象,是js访问浏览器的窗口,也是js中的全局对象
+// js语法的标准化组织是ECMA,
+// DOM标准化组织是w3c
+// BOM...(很尴尬),不同的浏览器,不同(没有利益冲突),兼容性差
+// clientwidth,不包括滚动条,innerWidth包括滚动条, 高度也一样
+// pagexoffset,pageyoffset,滚动条距离窗口距离可读可写,写了也不会影响滚动条
+// screenX||screenleft,浏览器距离屏幕窗口的距离(screeny||screentop))
+// window.name
+// alert(),confirm(),prompt(),window.beforseunload()
+// open(url,'duyi','width=100,height=200');设置新窗口的大小
+// close();只可以关系通过open打开的窗口
+// frameset,history,location,navigatoer,screen
+// navigator
+// appMinorVersion返回浏览器版本
+// appName浏览器名称
+// appVersion浏览器版本
+// userAgent,cookie,online(是否处于脱机模式),操作系统,平台(手机,ipad,电脑);浏览器版本,浏览器名称,浏览器内核
+// history,
+// go()正数向前,负数向后跳,back,后退,forward,前进
+// loacation,
+// hash返回从#(锚点)开始的url的链
+// host:设置或者返回当前url的端口号
+// hostname:设置或者返回当前url的主机名
+// href:设置或者返回完整的url
+// port:设置或者返回当前url的的端口号
+// protocol:设置或者返回当前url的协议
+// search:设置或者返回从?开始的url部分
+// assign()加载新文档
+// relaod('force');重新加载当前文档
+// replace():用新的文档替换当前文档
+// screen
+// 显示屏的信息
+// width:显示屏宽度,availwidth屏幕的可用高度

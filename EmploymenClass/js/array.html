@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<ul>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+	</body>
+	<script>
+		var liArray=document.getElementsByTagName('li');
+		var personArr=[
+			{name:'aaa',src:'images/1.jpg',des:'很好55',sex:'m',age:18},
+			{name:'ccc',src:'images/2.jpg',des:'很好44',sex:'f',age:16},
+			{name:'bbb',src:'images/3.jpg',des:'很好33',sex:'m',age:13},
+			{name:'ddd',src:'images/4.jpg',des:'很好22',sex:'f',age:12},
+			{name:'eee',src:'images/5.jpg',des:'很好11',sex:'m',age:19}
+			];
+			var liArray=document.getElementsByTagName('li');
+			personArr.forEach(function(ele,index,self){
+			  this[index].innerText=ele.name;
+			},liArray);
+//			Array.prototype.myForEach=function(fn){
+//				var _arr=this,len=this.length,para2=arguments[1]||window;
+//				for(var i=0;i<len;i++){
+//					fn.apply(para2,[_arr[i],i,_arr]);
+//				}
+//			}
+//			personArr.myForEach(function(ele,index,self){
+//				console.log(this,ele,index,self);
+//				this[index].innerText=ele.name;
+//			},liArray)
+			
+//			var newArr=personArr.map(function(ele,index,self){
+//				return ele.name+=3;
+//			},liArray)
+//			Array.prototype.myMap=function(fn){
+//				var _arr=this,len=this.length,para2=arguments[1]||window,newArr=[];
+//				for(var i=0;i<len;i++){
+//				 newArr.push(fn.apply(para2,[_arr[i],i,_arr]));
+//				}
+//				return newArr;
+//			}
+//			var newArr=personArr.myMap(function(ele,index,self){
+//				console.log(this);
+//				return ele.name+=3;
+//			},liArray);
+//         var newArr=personArr.filter(function(ele,index,self){
+//          	console.log(this,ele,index,self);
+//          	if(ele.age>16){
+//          		return ele;
+//          	}
+//          },liArray)
+//          Array.prototype.myfilter=function(fn){
+//          	var _arr=this,len=this.length,para2=arguments[1]||window,newArr=[];
+//          	for(var i=0;i<len;i++){
+//          		if(fn.apply(para2,[_arr[i]],i,_arr)){
+//          			newArr.push(fn.apply(para2,[_arr[i]],i,_arr));
+//          		}
+//          	}
+//          	return newArr;
+//          }
+//           var newArr=personArr.myfilter(function(ele,index,self){
+//          	console.log(this,ele,index,self);
+//          	if(ele.age>16){
+//          		return ele;
+//          	}
+//          },liArray)
+//			var newArr=personArr.every(function(ele,index,self){
+//				console.log(this,ele,index,self);
+//				if(ele.age>=12){
+//					return true;
+//				}
+//			})
+//			Array.prototype.myevery=function(fn){
+//				var _arr=this,len=this.length,para2=arguments[1]||window,flag=true;
+//				for(var i=0;i<len;i++){
+//					if(!fn.apply(para2,[_arr[i],i,_arr])){
+//						flag=false;
+//						break;
+//					}
+//				}
+//				return flag;
+//			}
+//			var newArr=personArr.myevery(function(ele,index,self){
+//				console.log(this,ele,index,self);
+//				if(ele.age>=13){
+//					return true;
+//				}
+//			},liArray)
+//			var newArr=personArr.some(function(ele,index,self){
+//				if(ele.age>13){
+//					return true;
+//				}
+//				console.log(this,index,self);
+//			})
+//			Array.prototype.mysome=function(){
+//				var _arrr=this,len=this.length,para2=arguments[1]||window,flag=true;
+//				for(var i=0;i<len;i++){
+//					if(fn.apply(para2,[_arr[i],i,_arr])){
+//						return true;
+//					}
+//				}
+//				return flag;
+//			}
+//			var newArr=personArr.some(function(ele,index,self){
+//				if(ele.age>20){
+//					return true;
+//				}
+//				console.log(this,index,self);
+//			},liArray)
+//    		var newArr=personArr.reduce(function(prevevalue,currValue,index,self){
+//    			console.log(this,prevevalue,currValue,index);
+//    			return prevevalue;
+////    		},'2222',liArray)
+//    		Array.prototype.myreduice=function(fn){
+//    			var _arr=this,len=this.length,para2=arguments[2]||window,initialValue=arguments[1];
+//    			for(var i=0;i<len;i++){
+//    				initialValue=fn.apply(para2,[initialValue,_arr[i],i,_arr]);
+//    			}
+//    		}
+//    		var newArr=personArr.myreduice(function(prevevalue,currValue,index,self){
+//    			console.log(this,prevevalue,currValue,index);
+//    			return prevevalue;
+//    		},'2222',liArray)
+////			console.log(newArr);
+	</script>
+</html>

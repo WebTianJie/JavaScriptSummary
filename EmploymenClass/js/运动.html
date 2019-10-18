@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>运动</title>
+		<style>
+			.ball {
+				border-radius: 50%;
+				background: radial-gradient(circle at 50% 120%, #f40, #f40 80%, #f40 100%);
+			}
+			
+			.ball:before {
+				content: "";
+				position: absolute;
+				background: radial-gradient(circle at 50% 120%, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0) 70%);
+				border-radius: 50%;
+				bottom: 2.5%;
+				left: 5%;
+				opacity: 0.6;
+				height: 100%;
+				width: 90%;
+				filter: blur(5px);
+				z-index: 2;
+			}
+			
+			.ball:after {
+				content: "";
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				top: 5%;
+				left: 10%;
+				border-radius: 50%;
+				background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8) 14%, rgba(255, 255, 255, 0) 24%);
+				transform: translateX(-80px) translateY(-90px) skewX(-20deg);
+				filter: blur(10px);
+			}
+			
+			div {
+				position: absolute;
+				width: 100px;
+				height: 100px;
+				left: 10px;
+				top: 10px;
+				background-color: red;
+			}
+			
+			#btn {
+				margin-top: 200px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="ball">
+
+		</div>
+		<button id="btn">run</button>
+		<script>
+			var oDiv = document.getElementsByTagName('div')[0];
+			var oBtn = document.getElementById('btn');
+			var timer = null;
+			var flag = true;
+			var distance = 300;
+			oDiv.onclick = function() {
+				//uniformMove(oDiv,distance);
+				//				bufferMove(this,{width: 600,height:400,left:200,top:300,opacity:10},function(){
+				//					console.log('已经运动完了');
+				//				});
+				//				plusMove(this,300);
+				elasticMove(this);
+			}
+
+			function getStyle(oDom, attr) {
+				if(window.getComputedStyle) {
+					return window.getComputedStyle(oDom, null)[attr];
+				} else {
+					return oDom.currentStyle[attr];
+				}
+			}
+			//弹性运动
+			function elasticMove(dom) {
+				clearInterval(dom.timer);
+				var a = 3;
+				var speedx = 6;
+				var speedy = 8;
+				var u = 0.8; //能量损失
+				var g = 1; //重力加速度
+				dom.timer = setInterval(function() {
+					speedy += g;
+					var newTop = dom.offsetTop + speedy;
+					var newLeft = dom.offsetLeft + speedx;
+					if(newTop >= document.documentElement.clientHeight - dom.clientHeight) {
+						speedy *= -1;
+						speedy *= u;
+						speedx *= u;
+						newTop = document.documentElement.clientHeight - dom.clientHeight;
+					}
+					if(newTop <= 0) {
+						speedy *= -1;
+						speedy *= 0.8;
+						speedx *= 0.8;
+						newTop = 0;
+					}
+					if(newLeft >= document.documentElement.clientWidth - dom.clientWidth) {
+						speedx *= -1;
+						speedy *= u;
+						speedx *= u;
+						newLeft = document.documentElement.clientWidth - dom.clientWidth;
+					}
+					if(newLeft <= 0) {
+						speedx *= -1;
+						speedy *= u;
+						speedx *= u;
+						newLeft = 0;
+					}
+					if(Math.abs(speedx) < 1) {
+						speedx = 0;
+					}
+					if(Math.abs(speedy) < 1) {
+						speedy = 0;
+					}
+
+					if(speedx == 0 && speedy == 0 && (newTop == (document.documentElement.clientHeight - dom.clientHeight))) {
+						clearInterval(dom.timer);
+					} else {
+						dom.style.top = newTop  + 'px';
+						dom.style.left = newLeft+ 'px';
+					}
+
+				}, 30);
+			}
+			//加速运动
+			function plusMove(dom) {
+				clearInterval(timer);
+				var speed = 20;
+				var a = 2;
+				timer = setInterval(function() {
+					speed = speed + a;
+					dom.style.left = dom.offsetLeft + speed + 'px';
+				}, 30);
+			}
+
+			//缓冲运动
+			//			function bufferMove(dom,attrObj,callback){
+			//				clearInterval(dom.timer);
+			//				var speed=null,iCurr=null;
+			//				dom.timer=setInterval(function(){
+			//					var isStop=true;
+			//					for(var attr in attrObj){
+			//						if(attr=="opacity"){
+			//							iCurr=parseFloat(getStyle(dom,attr))*100;
+			//						}else{
+			//							iCurr=parseInt(getStyle(dom,attr));
+			//						}
+			//						speed=(attrObj[attr]-iCurr)/10;
+			//						speed=speed>0?Math.ceil(speed):Math.floor(speed);
+			//						if(attr=='opacity'){
+			//							dom.style.opacity=(iCurr+speed)/100;
+			//						}else{
+			//							dom.style[attr]=iCurr+speed+'px';
+			//						}
+			//						console.log(attrObj[attr],iCurr);
+			//						if(iCurr!=attrObj[attr]){
+			//							isStop=false;
+			//						}
+			//					}
+			//					if(isStop){
+			//						typeof callback=='function'&&callback();
+			//						clearInterval(dom.timer);
+			//					}
+			//				},30);
+			//				
+			//			}
+			//匀速运动
+			//			function uniformMove(dom,target){
+			//				clearInterval(timer);
+			//				var speed=target-dom.offsetLeft>0?7:-7;
+			//				timer=setInterval(function(){
+			//					if(Math.abs(target-dom.offsetLeft)<Math.abs(speed)){
+			//						clearInterval(timer);
+			//						dom.style.left=distance+'px';
+			//					}else{
+			//						dom.style.left=dom.offsetLeft+speed+'px';	
+			//					}
+			//					
+			//				},30);
+			//				
+			//			}
+		</script>
+	</body>
+
+</html>

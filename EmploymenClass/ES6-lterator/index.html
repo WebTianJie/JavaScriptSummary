@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>数据劫持</title>
+	</head>
+
+	<body>
+		<input type="text" name="" id="search" value="" />
+		<button id="btn">提交</button>
+	</body>
+	<script src="Generator.js"></script>
+	<script>
+	//iterator,函数的母带,执行返回可以迭代的对象
+	let obj={
+		0:'a',
+		1:'b',
+		2:'c',
+		[Symbol.iterator]:function(){
+			let currIndex=0;
+			while(currIndex!=this.length){
+				yield this[currIndex];
+				currIndex++;
+			}
+		}
+	}
+	</script>
+
+</html>

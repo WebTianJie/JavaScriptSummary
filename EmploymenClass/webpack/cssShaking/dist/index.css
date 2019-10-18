@@ -1,0 +1,15 @@
+body {
+  background: #000;
+  height: 1000px;
+}
+
+div {
+  width: 100px;
+  height: 100px;
+  background: green;
+}
+
+a {
+  font-size: 60px;
+  color: red;
+}

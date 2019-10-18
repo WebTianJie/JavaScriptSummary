@@ -1,0 +1,13 @@
+body {
+  background: green;
+  color: red;
+  font-size: 30px;
+  height: 100px;
+}
+body .box {
+  width: 400px;
+  height: 300px;
+  background: green;
+  color: #000;
+  transform: rotateX(45deg);
+}
