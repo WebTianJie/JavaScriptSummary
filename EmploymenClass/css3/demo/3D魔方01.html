@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>3D魔方</title>
+		<style type="text/css">
+			html{height: 100%;}
+			body{padding:0;margin:0;perspective: 3000px;
+				transform-style: preserve-3d;height: 100%;}
+			.wrap{
+				position: absolute;
+				left:50%;
+				top: 50%;
+				width: 300px;
+				height: 300px;
+				transform-style: preserve-3d;
+				transform: translateX(-50%) translateY(-50%);
+				animation: round 5s alternate-reverse infinite;
+			}
+			@keyframes round{
+				0%{
+					transform: translateX(-50%) translateY(-50%) rotateY(0deg) rotateX(0deg) ;
+				}
+				100%{
+					transform: translateX(-50%) translateY(-50%) rotateY(360deg) rotateX(360deg);
+				}
+			}
+			.wrap  img{width: 300px;height: 300px;position: absolute;}
+			img:nth-of-type(1){
+				transform: rotatey(0deg) translatez(150px);
+			}
+			img:nth-of-type(2){
+				transform: rotateY(90deg) translateZ(150px);
+			}
+			img:nth-of-type(3){
+				transform: rotateY(180deg) translateZ(150px);
+			}
+			img:nth-of-type(4){
+				transform: rotateY(-90deg) translateZ(150px);
+			}
+			img:nth-of-type(5){
+				transform: rotateX(90deg) translateZ(150px);
+			}
+			img:nth-of-type(6){
+				transform: rotateX(-90deg) translateZ(150px);
+			}
+		</style>
+	</head>
+	<body>
+		<div class="wrap">
+			<img src="images/pic1.jpeg" alt="" />
+			<img src="images/pic2.jpeg" alt="" />
+			<img src="images/pic3.jpeg" alt="" />
+			<img src="images/pic4.jpeg" alt="" />
+			<img src="images/pic5.jpeg" alt="" />
+			<img src="images/pic6.jpeg" alt="" />
+		</div>
+	</body>
+	<script>
+		document.body.onmousemove=function(e){
+			this.style.perspectiveOrigin=''+e.pageX+'px '+e.pageY+'px';
+		}
+	</script>
+</html>

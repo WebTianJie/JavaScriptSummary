@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	<script>
+		//计算2的n次幂,n可输入
+		//var  count=parseInt(window.prompt('请输入2的次幂'));
+		//var  sum=1;
+		//for(var i=0;i<count;i++){
+			//sum*=2;
+		//}
+		//计算n的阶乘,n可数输入
+		//5*4*3*2*1
+		//4*3*2*1
+		//3*2*1
+		//2*1
+		//1
+		//0
+		/*var  count=parseInt(window.prompt('请输入阶乘的数'));
+		var sumFactorial=1;
+		function Factorial(n){
+			if(n==0){
+				sumFactorial=0;
+			}else if(n==1){
+				sumFactorial=1;
+			}else{
+				sumFactorial=n*Factorial(n-1);
+			}
+			return sumFactorial;
+		}
+		console.log(Factorial(count));*/
+		//裴波那契数列,
+		//1,1,2,3,5,8,13,21,34,55
+		/*var sumSerise=0;
+		var  count=parseInt(window.prompt('请输入数'));
+		function Series(n){
+			if(n==0){
+				return 0;
+			}else if(n==2||n==1){
+				sumSerise=1;
+			}else if (n>2){
+				sumSerise=Series(n-1)+Series(n-2);
+			}
+			return sumSerise;
+		}
+		console.log(Series(count));*/
+		//输入一个是三位数,反向输出,456,654
+		var num=parseInt(window.prompt('请输入一个三位数'));
+		var gNum=num%10;
+		var hNum=parseInt(num/100);
+		var tNum=(num-hNum*100-gNum)/10;
+		console.log(gNum+''+tNum+hNum);
+		//输入a,b,c打印最大的一个
+		/*var  count=parseInt(window.prompt('请输第一个数'));
+		var temp=0;
+		temp<count?temp=count:'';
+		var  count1=parseInt(window.prompt('请输第二个数'));
+		temp<count1?temp=count1:'';
+		var  count2=parseInt(window.prompt('请输第三个数'));
+		temp<count2?temp=count2:'';
+		console.log(temp);*/
+	</script>
+</html>

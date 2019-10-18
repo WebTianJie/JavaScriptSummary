@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			div {
+				border: 1px solid #000;
+				display: inline-block;
+			}
+
+			#show {
+				top: 300px;
+				position: absolute;
+				width: 100px;
+				height: 100px;
+				border: 1px solid #000;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="id"></div>
+		<div id="show"></div>
+		<div id="show">00000</div>
+		<button type="bg">green</button>
+		<button type="cl">blue</button>
+		<button type="fs">font-size</button>
+		<button type="fw">font-weight</button>
+		<button type="op">opacity</button>
+	</body>
+	<script>
+		var oDom=document.getElementById('show');
+		var ProxyStyle=function (func){
+			var cache=[];
+			var timer=null;
+			return function(){
+				cache.push(this.getAttribute('type'));
+				clearTimeout(timer);
+				setTimeout(function(){
+					func.apply(oDom,cache);
+					cache=[];
+				},2000)
+			}
+		}
+		
+		var realChangeStyle=ProxyStyle(changeStyle);
+		
+		
+		function changeStyle(dom,type){
+			var styleArr={
+				"bg":["backgroundColor","green"],
+				"cl":["color","yellow"],
+				"fs":["fontSize","36px"],
+				"fw":["fontWeight","bold"],
+				"op":["opacity","0.3"]
+			};
+			if(type.constructor==Array){
+				type.forEach(function(ele){
+					dom.style[styleArr[ele][0]]=styleArr[type][ele][1];
+				})
+			}else{
+				dom.style[styleArr[type][0]]=styleArr[type][1];
+			}
+		}
+		var btnArr=document.getElementsByTagName('button');
+		for (var i = 0; i < btnArr.length; i++) {
+			btnArr[i].onclick=realChangeStyle;
+		}
+	</script>
+</html>

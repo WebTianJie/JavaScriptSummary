@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			.box{
+				position:absolute;
+				width:200px;
+				height:200px;
+				background-color: #FF3333;
+				left: 10px;
+			}
+			span{
+				position: absolute;
+				height: 200px;
+				left: 600px;
+				width: 2px;
+				background: #000;
+				display: block;
+			}
+			#show{
+				top: 300px;
+				position: absolute;
+				width:100px;
+				height:100px;
+				border:1px solid #000;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="box" id="box"></div>
+		<span></span>
+	</body>
+	<script src="js/move.js"></script>
+	<script>
+	var oDom=document.getElementById('box');
+	oDom.onclick=function(){
+		move(oDom,600);
+	}
+	</script>
+	
+</html>

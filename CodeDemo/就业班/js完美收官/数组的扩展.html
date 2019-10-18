@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<ul>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+	</body>
+	<script>
+		var arr = [10, 13, 15, 18,18,20];
+		Array.prototype.myForeach = function(func) {
+			var _arr = this,
+				len = arr.length,
+				othis = arguments[1] || window;
+			for (var i = 0; i < len; i++) {
+				func.apply(othis, [arr[i], i, arr]);
+			}
+			return _arr;
+		}
+		Array.prototype.myFilter = function(func) {
+			var _arr = this,
+				len = arr.length,
+				othis = arguments[1] || window,
+				newArr = [];
+			for (var i = 0; i < len; i++) {
+				func.apply(othis, [arr[i], i, arr]) ? newArr.push(arr[i]) : '';
+			}
+			return newArr;
+		}
+		Array.prototype.myMap = function(func) {
+			var _arr = this,
+				len = _arr.length,
+				othis = arguments[1] || window,newArr=[];
+			for (var i = 0; i < len; i++) {
+				newArr.push(func.apply(othis, [arr[i], i, _arr]));
+			}
+			return newArr;
+		}
+		Array.prototype.myEvery=function(func){
+			var _arr=this,len=this.length,othis=arguments[1]||window,flag=true;
+			for (var i = 0; i < len; i++) {
+				if(!func.apply(othis,[_arr[i],i,_arr])){
+					flag=false;
+				}
+			}
+			return flag;
+		}
+		Array.prototype.mySome=function(func){
+			var _arr=this,len=this.length,othis=arguments[1]||window,flag=false;
+			for (var i = 0; i < len; i++) {
+				if(func.apply(othis,[_arr[i],i,_arr])){
+					flag=true;
+				}
+			}
+			return flag;
+		}
+		// arr.myForeach(function(ele,index,self){
+		// 	console.log(ele,index,self);
+		// 	this[index].innerText=ele;
+		// },document.getElementsByTagName('li'));
+		// var newArr=arr.myFilter(function(ele,index,self){
+		// 	this[index].innerText='花生';
+		// 	return ele=="花生";
+		// },document.getElementsByTagName('li'));
+		// var newArr=arr.myMap(function(ele, index, self) {
+		// 	return ele=ele + 1;
+		// }, document.getElementsByTagName('li'));
+		// var res=arr.myEvery(function(ele,index,self){
+		// 	return ele > 10;
+		// })
+		var res=arr.mySome(function(ele,index,self){
+			return ele > 19;
+		})
+	</script>
+</html>

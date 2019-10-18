@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+
+		</style>
+	</head>
+	<body>
+		<div>
+			用户名: <input type="text" id="userName" name="username">
+			<span id="showNameError"></span>
+			密码: <input type="password" id="userPwd" name="userpwd">
+			<span id="showPwdError"></span>
+			邮箱: <input type="text" id="userEmail" name="userEmail">
+			<span id="showEmailError"></span>
+			<button id="submit">提交</button>
+		</div>
+	</body>
+	<script>
+		// var flag=true;
+		// submit.onclick=function(){
+		// 	showNameError.innerText='';
+		// 	showPwdError.innerText='';
+		// 	if(userName.value==''){
+		// 		flag=false;
+		// 		showNameError.innerText="用户名不能为空";
+		// 	}else{
+		// 		if(userName.value.length>=4){
+		// 			flag=false;
+		// 			showNameError.innerText="用户名不能大于4";
+		// 		}
+		// 	}
+		// 	if(userPwd.value==''){
+		// 		flag=false;
+		// 		showPwdError.innerText="密码不能为空";
+		// 	}else if(userPwd.value.length<6){
+		// 		flag=false;
+		// 		showPwdError.innerText="密码不能小于6位数";
+		// 	}
+		// 	if(flag){
+		// 		
+		// 	}
+		// }
+		// function Request(){
+		// 	
+		// }
+	</script>
+	<script>
+		var flag = true;
+		submit.onclick = function() {
+			ProxyRequest();
+		}
+
+		function Validator() {
+			this.cache = [];
+			this.warnDom = [];
+		}
+		var validator = new Validator();
+		Validator.prototype.strategies = {
+			isNonEmpty: function(value, msg) {
+				if (value == '') {
+					return msg;
+				}
+				return true;
+			},
+			maxLength: function(value, length, msg) {
+				if (value != '' && value.length > length) {
+					return msg;
+				}
+				return true;
+			},
+			minLength: function(value, length, msg) {
+				if (value != '' && value.length < length) {
+					return msg;
+				}
+				return true;
+			}
+		}
+		Validator.prototype.start = function() {
+			var flag = true;
+			this.warnDom.forEach(function(ele, index) {
+				ele.innerText='';
+			})
+			this.cache.forEach(function(ele, index) {
+				if (ele() != true) {
+					flag = false;
+				}
+			})
+			return flag;
+		}
+		Validator.prototype.add = function(dom, showDom, stategyArr) {
+			var self = this;
+			this.warnDom.push(dom);
+			stategyArr.forEach(function(ele, index) {
+				self.cache.push(function() {
+					var arr = ele.strategy.split(':');
+					var type = arr.shift();
+					arr.unshift(dom.value);
+					arr.push(ele.errorMsg)
+					var msg = self.strategies[type].apply(this, arr);
+					if (msg != true) {
+						showDom.innerText = msg;
+					}
+					return msg;
+				})
+			})
+		}
+		Validator.prototype.extend=function(config){
+			for (var prop in config) {
+				Validator.prototype.strategies[prop]=config[prop];
+			}
+		}
+		validator.extend({
+			isEmail:function(value,errorMsg){
+				if(value.length!=''&&value.indexOf('@')==-1){
+					return errorMsg;
+				}
+				return true;
+			}
+		})
+		var ProxyRequest = (function() {
+			validator.add(userName, showNameError, [{
+				strategy: 'isNonEmpty',
+				errorMsg: '用户名不能为空'
+			}, {
+				strategy: 'maxLength:4',
+				errorMsg: '最大长度为4'
+			}]);
+			validator.add(userPwd, showPwdError, [{
+				strategy: 'isNonEmpty',
+				errorMsg: '密码不能为空'
+			}, {
+				strategy: 'minLength:6',
+				errorMsg: '最小长度为6'
+			}]);
+			validator.add(userEmail, showEmailError, [{
+				strategy: 'isNonEmpty',
+				errorMsg: '邮箱不能为空'
+			}, {
+				strategy: 'isEmail',
+				errorMsg: '邮箱格式错误'
+			}]);
+			return function() {
+				if (validator.start()) {
+					Request();
+				}
+			}
+		})()
+
+		function Request() {
+			console.log('send');
+		}
+	</script>
+</html>

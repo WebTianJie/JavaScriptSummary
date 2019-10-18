@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			@keyframes kcursor{
+				0%{
+					border-left-color: rgba(0,0,0,0);
+				}
+				50%{
+					border-left-color: rgba(0,0,0,1);
+				}
+				100%{
+					border-left-color: rgba(0,0,0,0);
+				}
+			}
+			@keyframes move{
+				0%{
+					left: 0;
+				}
+				100%{
+					left: 100%;
+				}
+			}
+			.key-press{font-family:"宋体";font-size: 34px;height: 45px;position: relative;display: inline-block;}
+			.key-press::after{
+				content: '';
+				position: absolute;
+				top:3px;
+				left: 0;
+				width:100%;
+				height: 40px;
+				display: block;
+				background-color:#fff;
+				box-sizing: border-box;
+				border-left: 2px solid #000;
+				animation:kcursor 1s steps(1,end) infinite,move 10s steps(16,end)  infinite;
+			}
+		/*========================================================*/
+		@keyframes second{
+			0%{
+				transform: rotate(180deg);
+			}
+			/*50%{
+				transform:rotate(540deg);
+			}*/
+			100%{
+				transform:rotate(540deg);
+			}
+		}
+		@keyframes minute{
+			0%{
+				transform: rotate(180deg);
+			}
+			/*50%{
+				transform:rotate(540deg);
+			}*/
+			100%{
+				transform:rotate(540deg);
+			}
+		}
+		 .clock{width:521px;height:512px;position:relative;background: url(images/clock.png) center center no-repeat;}
+		 .second{width:16px;height:278px;position:absolute;left: 251px; top: 180px;background:url(images/second.png) center center no-repeat;
+		 	transform: rotate(180deg);
+		 	transform-origin:  center 76px;
+		 	animation: second 60s steps(60,end) backwards infinite;
+		 }
+		 .minute{width:32px;height:218px;position:absolute;left: 243px; top: 240px;background:url(images/minute.png) center center no-repeat;
+		 	transform: rotate(180deg);
+		 	transform-origin:  center 16px;
+		 	animation: minute 3600s steps(60,end) backwards infinite;
+		 }
+		 .hour{width:32px;height:148px;position:absolute;left: 244px; top: 240px;background:url(images/hour.png) center center no-repeat;}
+		 /*======================================================================*/
+		@keyframes runhorse{
+			0%{
+				background-position-x:0 ;
+			}
+			100%{
+				background-position-x:-2400px ;
+			}
+		}
+		.horse{
+			width: 200px;
+			height: 100px;
+			background: url(images/horse.png) left center no-repeat;
+			animation: runhorse 0.6s steps(12,end) infinite;
+		}
+		
+		</style>
+	</head>
+	<body>
+		<div class="key-press">
+			落红不是无情物，化作春泥更护花花
+		</div>
+		<div class="clock">
+			<div class="hour"></div>
+			<div class="minute"></div>
+			<div class="second"></div>
+		</div>
+		<div class="horse"></div>
+	</body>
+</html>

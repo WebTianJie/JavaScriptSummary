@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>文字逐渐放大</title>
+		<style type="text/css">
+			.sacle{width: 200px;margin: 50px auto 0;
+				font-size: 12px;text-align: center;
+				animation: scale 4s forwards alternate-reverse infinite;
+			}
+			@keyframes scale{
+				from{
+					transform: scale(0.1,0.1);
+					text-shadow: 
+						85px 0px 0px  rgba(255,0,0,0.3),
+						-85px 0px 0px  rgba(255,0,0,0.3),
+						-65px 0px 0px  rgba(255,0,0,0.4),
+						-45px 0px 0px  rgba(255,0,0,0.6)
+						;
+				}
+				to{
+					transform: scale(5,5);
+					text-shadow: 
+						1px 1px 1px  rgba(255,0,0,0.3),
+						1px 1px 1px  rgba(255,0,0,0.3),
+						1px 1px 1px  rgba(255,0,0,0.4),
+						1px 1px 1px  rgba(255,0,0,0.6)
+						;
+					
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div class="sacle" >
+			健康咨询管理师
+		</div>
+	</body>
+</html>

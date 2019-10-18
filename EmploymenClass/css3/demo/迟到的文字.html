@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>迟到的文字</title>
+		<style type="text/css">
+			.wrapper{
+				width: 600px;margin:0 auto;font-size: 45px;overflow: hidden;
+			}
+			span{display: block;float:left;}
+			.left{
+				animation:lleft 4s backwards alternate  1 ;
+			}
+			.right{
+				animation:rleft 2s backwards alternate 1,down 0.1s forwards alternate 5s 1 ;
+			}
+			
+			@keyframes lleft{
+				from{margin-left: -400px;}
+				to{margin-left: 0;}
+			}
+				
+			@keyframes rleft{
+				from{margin-left: -800px;}
+				to{margin-left: 0;}
+			}
+			@keyframes down{
+				from{
+					margin-top: 0;
+				}
+				to{
+					margin-top: 5px;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div class="wrapper">
+			<span class="left">报考消防工程师就找</span><span class="right">过锅巴网</span>
+		</div>
+	</body>
+</html>

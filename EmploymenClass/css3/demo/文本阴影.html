@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			body{/*background:#000;*/}
+			.fd{
+				position:absolute;
+				left: calc(50% - 50px);
+				top:20px;
+				width:100px:
+				height:100px;
+				font-size:80px;
+				color:#ddd;
+				text-shadow:1px 1px #000,-1px -1px #fff;			
+			}
+			.lk{
+				position:absolute;
+				left: calc(50% - 50px);
+				top:200px;
+				width:100px;
+				height:100px;
+				font-size:80px;
+				color:#ddd;
+				text-shadow:-1px -1px #000,1px 1px #fff;
+			}
+			.fg{
+				position:absolute;
+				left: calc(50% - 50px);
+				top:400px;
+				width:100px;
+				height:100px;
+				font-size:80px;
+				color:#ddd;
+				text-shadow:0px 0px 10px #0F0,0px 0px 20px #0F0,0px 0px 30px #0F0;
+				transition: all 2s;
+			}
+			.fg:before{
+				content: 'NO';
+				text-shadow:0px 0px 10px #F00,0px 0px 20px #F10,0px 0px 30px #F20,
+				0px -5px 20px #F10,0px -10px 20px #F20,0px -15px 30px #F10,0px -20px 40px #F20;
+				transition: all 3s;
+				opacity: 0;
+			}
+			.fg:hover::before{
+				opacity: 1;
+			}
+			
+			.ss{
+				position:absolute;
+				left: calc(50% - 50px);
+				top:400px;
+				width:600px;
+				height:150px;
+				font-size:80px;
+				color:#000;
+				font-weight:bold;
+				background-image: url(images/eye.jpg);
+				background-size: 400px 300px;
+				background-position: 0 -100px;
+				
+				-webkit-background-clip: text;
+				background-clip: text;/*//会导致阴影在图片上面*/
+				-webkit-text-fill-color: transparent;
+				text-fill-color: transparent;
+				transition: all 2s;
+				text-shadow: -10px -10px  10px rgba(255,0,255,0.1),
+				5px 5px  10px rgba(0,255,255,0.2);
+			}
+			.ss:hover{
+				background-position: -45px -23px;
+			}
+			.mb{
+				font-size: 120px;
+				font-family: simsun;
+				font-weight: bold;
+				-webkit-text-stroke: 1px red;
+				color: transparent;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<!--<div class="fd">TEXT SHADOW</div>
+		<div class="lk">TEXT SHADOW</div>
+		<div class="fg">ACCESS</div>-->
+		<!--<div class="ss">死神来了</div>-->
+		<div class="mb">我是悲鸣</div>
+	</body>
+</html>

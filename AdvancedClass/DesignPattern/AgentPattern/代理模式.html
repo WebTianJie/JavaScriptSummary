@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			div {
+				border: 1px solid #000;
+				display: inline-block;
+			}
+			#show{
+				top: 300px;
+				position: absolute;
+				width:100px;
+				height:100px;
+				border:1px solid #000;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="id"></div>
+		<div id="show"></div>
+		<div id="show">00000</div>
+		<button type="bg">green</button>
+		<button type="cl">blue</button>
+		<button type="fs">font-size</button>
+		<button type="fw">font-weight</button>
+		<button type="op">opacity</button>
+	</body>
+	<script>
+		// var mrDeng={
+		// 	senderFLower:function(target){
+		// 		target.receiveFlower("sun flower")
+		// 	}
+		// }
+		// var cstProxy={
+		// 	proxyFlower:function(target){
+		// 		this.listenMood(target,function(){
+		// 			mrDeng.senderFLower(target);
+		// 		})
+		// 	},
+		// 	listenMood:function(target,cb){
+		// 		var timer=setInterval(function(){
+		// 			if(target.mood){
+		// 				cb();
+		// 				clearInterval(timer)
+		// 			}
+		// 		},300)
+		// 	}
+		// }
+		// var  goddness={
+		// 	mood:null,
+		// 	receiveFlower:function(){
+		// 		//true good false bad
+		// 		this.mood?console.log('ok'):console.log('get out');
+		// 	},
+		// 	changeMood:function(){
+		// 		this.mood=Math.random()>0.5;
+		// 	},
+		// 	createMood:function(){
+		// 		var self=this;
+		// 		self.changeMood();
+		// 		setInterval(function(){
+		// 			self.changeMood();
+		// 		},400)
+		// 	}
+		// }
+		// goddness.createMood();
+		// // mrDeng.senderFLower(goddness);
+		// cstProxy.proxyFlower(goddness);
+	</script>
+	<script>
+		var MyImage = function(id) {
+			var oImage = new Image();
+			this.setSrc = function(src) {
+				oImage.src = src;
+			}
+			document.getElementById(id).appendChild(oImage);
+		}
+		// var  oMyImg=new MyImage('id');
+		// oMyImg.setSrc('http://img3.imgtn.bdimg.com/it/u=732166549,1153412264&fm=26&gp=0.jpg');
+		var ProxyImage = (function() {
+			var oMyImg = new MyImage('id');
+			var oNewImage = new Image();
+			oNewImage.onload = function() {
+				oMyImg.setSrc(oNewImage.src);
+			}
+			return function(src) {
+				oMyImg.setSrc('http://image.yy.com/yywebalbumbs2bucket/855511baf2f54f71b2b8d94e26014c78_1505788690156.jpg');
+				oNewImage.src = src;
+			}
+		})()
+		ProxyImage('http://img2.imgtn.bdimg.com/it/u=2394408811,258126277&fm=26&gp=0.jpg')
+	</script>
+	<script>
+		var oDom=document.getElementById('show');
+		var buttonArr=document.getElementsByTagName('button');
+		var ProxyRequest=function(func){
+			var cache=[];
+			var timer=null;
+			return function(){
+				cache.push(this.getAttribute('type'));
+				clearTimeout(timer);
+				timer=setTimeout(function(){
+					func(oDom,cache);
+					cache=[];
+				},2000)
+			}
+		}
+		var realChangeStyle=ProxyRequest(changeStyle);
+		for (var i = 0; i < buttonArr.length; i++) {
+				buttonArr[i].onclick=realChangeStyle;
+		}
+		function changeStyle(dom,type){
+			var typeObj={
+				bg:['backgroundColor','green'],
+				cl:['color','yellow'],
+				fs:['fontSize','24px'],
+				fw:['fontWeight','bold'],
+				op:['opacity','0.3']
+			}
+			if(type.constructor==Array){
+				type.forEach(function(ele){
+					dom.style[typeObj[ele][0]]=typeObj[ele][1];
+				})
+			}else{
+				dom.style[typeObj[type][0]]=typeObj[type][1];
+			}
+			
+		}
+	</script>
+</html>

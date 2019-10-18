@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			div{text-align: center;font-size: 20px;}
+			.container{width:800px;height:400px;margin: 0 auto;resize: both;overflow: hidden;
+				display: flex;
+				flex-direction:column ;
+				align-content: center;
+			}
+			.header{flex: 0 0 20%;background: #008000;}
+			.footer{flex:0 0 20%;background: #008000;}
+			.content{flex: 1 1 auto;display: flex;}
+			.content .left{flex: 0 0 20%;background: #f40;}
+			.content .center{flex: 1 1 auto;background: #000;color:#fff;}
+			.content .right{flex:0 0 20%;background: #f40;}
+			
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="header">头部</div>
+			<div class="content">
+				<div class="left">左边</div>
+				<div class="center">中间</div>
+				<div class="right">右边</div>
+			</div>
+			<div class="footer">底部</div>
+		</div>
+	</body>
+</html>

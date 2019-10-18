@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			*,body{margin: 0;padding: 0;list-style: none;}
+			.tab ul{display: block;overflow: hidden;}
+			.tab ul li{float: left;width: 60px;height: 30px;text-align: center;line-height: 30px;font-weight: 20px;background: green;color:#fff;margin-right: 5px;}
+			.box-container{
+				width: 190px;height: 100px;background: #000;color: #fff;text-align: center;line-height: 100px;font-size: 30px;
+			}
+			.box-container div{display: none;}
+			.box-container .box:target{display: block;}
+			.accordion{overflow: hidden;width: 600px;margin:0 auto;}
+			.accordion ul{}
+			.accordion ul li{}
+			.accordion ul li a{display:block;width:120px;height:30px;border:1px solid #008000}
+			.accordion ul li div{width: 120px;height: 0px;border-top: none;background: #3C8DFF;transition: all 1.6s;}
+			.accordion ul li div:target{height: 80px;border:1px solid #008000;}
+		</style>
+	</head>
+	<body>
+		<!--选项卡效果开始-->
+		<div class="tab">
+			<ul>
+				<li><a href="#cn01">1</a></li>
+				<li><a href="#cn02">2</a></li>
+				<li><a href="#cn03">3</a></li>
+			</ul>
+			<div class="box-container">
+				<div id="cn01" class="box">content-one</div>
+				<div id="cn02" class="box">content-two</div>
+				<div id="cn03" class="box">content-three</div>
+			</div>
+		</div>
+		<!--选项卡效果结束-->
+		<!--手风琴效果开始-->
+		<div class="accordion">
+			<ul>
+				<li><a href="#con01"></a>
+					<div id="con01" class="con"></div>
+				</li>
+				<li><a href="#con02"></a>
+					<div id="con02" class="con"></div></li>
+				<li><a href="#con03"></a>
+					<div id="con03" class="con"></div></li>
+				<li><a href="#con04"></a>
+					<div id="con04" class="con"></div></li>
+				<li><a href="#con05"></a>
+					<div id="con05" class="con"></div></li>
+			</ul>
+		</div>
+		<!--手风琴效果结束-->
+	</body>
+</html>
