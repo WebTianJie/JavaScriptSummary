@@ -1,8 +1,42 @@
 ## 一:vue的基础知识
 ### 1:性能好
+    1:重排和重绘
+    当dom的变化影响了元素的集合属性(宽, 高),浏览器需要重新计算元素的几何
+    属性,同样其它的元素的几何属性和位置也会受到影响.浏览器会使渲染树中
+    受到影响的dom收到影响的部分失效,并重新构造渲染树;这个过程称为重排;
+    完成重排以后,浏览器会重新绘制受影响的部分到屏幕中去,该过程被称为重绘
+    2:那些css改变的时候,会重新排
+       1:添加,删除可见的dom
+       2:元素位置发生变化
+       3:元素的尺寸发生变化(外边距,内边距,边框,宽度,高度等)
+       4:内容改变,文本改变或者图片被另外一张图片改变
+       5:页面渲染初始化
+       6:浏览器窗口的尺寸改变
+       7:参考 css对象重绘重排的影响 http://csstrigger.com/
+    3:触发重排的属性
+      offsetTop,offsetLeft,offsetWidth,offsetHeight
+      scrollTop,scrollLeft,scrollWidth,scrollHeight
+      clientTop,clientLeft,clientWidth,clientHeight
+      getComputedStyle();
 	操作dom是影响性能,因为操作DOM代价是昂贵的,重绘,重排,
 	vue使用的虚拟Dom,也称为伪Dom
 	所谓虚拟的dom即为伪dom,假的dom,它不是一个真实的dom,而是有js来模拟的出来具有dom结构的一个树形结构;
+	js虚拟dom
+	var rootDom={
+	   id:'bodyRoot'
+	   tagName:"body",
+	   type:1,
+	   attrs:[style,data-attrs],
+	   children:[
+	        {
+	        id:'h1'
+	        type:1,
+	        tagName:'h1',
+	         attrs:[style,data-attr],
+	         content:'这里是h标签的内容'
+	        }
+	   ]
+	}
 ### 2:视图,数据分离
 	只关心数据的变化,视图会跟着更新
 ### 3:维护成本低
@@ -33,23 +67,30 @@
 ####	6:app.$el //vue挂载的dom对象,渲染视图是异步的
 ####	7:$nextTick
 		```
-		$nextTick(()=>{
+		app.$nextTick(()=>{
 				console.log('数据改变以后,视图已经修改完毕,才会执行该方法');
 			})
 		```
 		
 ####	8:app.$mout('#app');动态挂载元素
 ## 三:常用命令
-#####   1:v-pre:不会渲染的内容,v-cloak文件编译之前存在,编译之后就不存在了,v-once:始终显示第一次渲染的值,不会再被修改,v-html:显示字符串类型的代码,代码会被编译,v-text:文字处理,就算有代码的话,也会被当做字符串处理
-#####	2:v-if:根据值显示是否显示里面的元素 元素会被先删除,再添加,v-else if:配合v-else来使用,v-else上面不能出现其他元素,v-else:配合v-else来使用,v-else上面不能出现其他元素,v-show:根v-if功能是一样的:控制元素的css显示和隐藏,不支持Template
-#####	3:Template,模板,不会显示在页面
-#####	4:v-bind:绑定属性
+    1:v-pre:不会渲染的内容,
+    2:v-cloak文件编译之前存在,编译之后就不存在了,
+    3:v-once:始终显示第一次渲染的值,不会再被修改,
+    4:v-html:显示字符串类型的代码,代码会被编译,
+    5:v-text:文字处理,就算有代码的话,也会被当做字符串处理
+	6:v-if:根据值显示是否显示里面的元素 元素会被先删除,再添加,
+	    v-else if:配合v-else来使用,
+	    v-else:配合v-else来使用,v-else上面不能出现其他元素,
+	    v-show:根v-if功能是一样的:控制元素的css显示和隐藏,不支持Template
+	7:Template,模板,不会显示在页面
+	8:v-bind:绑定属性
 		v-bind:src,v-bind:href,v-bind:data-src
 		简写: :src,:href,:data-src
 		注意:class多个class用数组 :class="[red,blue]" 根据一个值确定是否添加(使用对象的方式):class="{red:true}"
-#####	5:绑定style :style="{width:100px,height:100px}"
-#####	6:绑定事件:v-on:click,简写@click,methods里面的函数不能和data里面的函数重名
-#####	7:v-for
+	9:绑定style :style="{width:100px,height:100px}"
+	10:绑定事件:v-on:click,简写@click,methods里面的函数不能和data里面的函数重名
+	11:v-for
 ```
  <div v-for="{item,index} in arr" :key="index"></div>//在脚手架搭建的项目总必须要有key,key的值是唯一的,key值不能给Template
  注意:v-for="(key,value) in 8" 是循环的1-8的值
