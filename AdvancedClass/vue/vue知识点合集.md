@@ -97,9 +97,12 @@
 ```
 		
 #####	 8:模板字符串:"`你好我是{{name}}_li`" name会和_li拼接出来的字符换
-#####	 9:v-model:数据的双向绑定,radio,checkbox数据双向绑定,绑定是的多选框/单选框的value值,checkbox值也是放在数组里,,select绑定的值是option的value值,多选的时候绑定对应的是数组,input事件的时候触发
-		v-model:lazy 触发input的change事件
-		v-model:trim 删除值的前后空格
+#####	 9:v-model:数据的双向绑定,
+        radio,checkbox数据双向绑定,绑定是的多选框/单选框的value值,checkbox值也是放在数组里,
+        select绑定的值是option的value值,多选的时候绑定对应的是数组,input事件的时候触发
+		v-model.lazy 触发input的change事件
+		v-model.trim 删除值的前后空格
+		v-model.number 输入的数据是number类型,如果是无法转换成数字的字符串,则还是string类型
 #####	 10:$event 在vue中,传递参数多个参数的话,e就不会被传递,vue使用$event来代替e传入
 #####	 11:修饰符`<input @keyup.enter="add">` 按下enter的时候,触发事件
 		配置键盘的值
@@ -151,7 +154,7 @@
 				el.focus();
 			}
 		}
-	)//自定义质量,可以通过v-sclice使用指令
+	)//自定义指令,可以通过v-sclice使用指令
 	const vm=new Vue({//局部自定义指令,只能在#app元素内部使用
 		el:"#app",
 		directive:{
@@ -160,33 +163,55 @@
 			}
 		}
 	})
-	const vm=new Vue({
-		el:"#app1"
-	})//此处vm,vm1都是局部指令
+	const vm1=new Vue({
+		el:"#app1",
+		directive:{
+            slice:(ele.bindings,vnode){
+                
+            }
+            pop:(){
+            
+            }
+        }
+	})//此处slice,pop都是局部指令
 	```
 ## 五:过滤器
 ####	1:不改变原有数据的情况,修改数据的展示格式,过滤器可以有多个,过滤器也可以定义局部的
 	```
+	全局定义过滤器
 	data:{
 		money:10000
 	}
 	{{money|toMoney(2)|ceshi}}
-	Vue.filter('toMoney',(value,times)=>{
+	Vue.filter('toMoney',(value,times)=>{//第一个参数,永远是原始数据
 		consoe.log(value);1000
 		return (value*2).toLocalString();
 	})
-	Vue.filter('ceshi',value=>{
-		console.log(value);20000
+	Vue.filter('ceshi',value=>{//第二个过滤器是过滤的前一个过滤器的的值
+		console.log(value);//20000
 		return value;
 	})
 	```
+	局部定义过滤器
+	 let app=new Vue({
+            el:'#app',
+            data:{
+                contents:'jkshfkahfkj'
+            },
+            filters:{//局部过滤器
+                toMoney(){
+                },
+                ceshi(){
+                }
+            }
+        })
 ## 六:el,Template,render
 ####	1://渲染过程:先检测el绑定的元素->查看是否存在template,如果存在的话->查看是否存在render函数,如果存在render函数,按照render函数来渲染,如果不存在的话,就按照template来渲染
 	
 	const vm=new Vue({
 		el:"#app",
 		template:'<h2>{{msg}}</h2>',
-		render(createElement){
+		render(createElement){//不会使用之前的模板了,会使用render函数返回的元素
 			return createElement('h1',
 			{
 				class:'demo',
@@ -208,7 +233,9 @@
 		template:'<h2>{{msg}}</h2>',
 		render(h){
 			const tag="div";
-			<tag class="demo" style={{color:'red',fontSize:'12px'}} on-click={{()=>{console.log('demo')}}}>
+			<tag class="demo" 
+			style={{color:'red',fontSize:'12px'}} 
+			on-click={{()=>{console.log('demo')}}}>
 			我是标题一
 			<p>我是一个p标签</p>
 			</tag>
@@ -223,6 +250,7 @@
 		}
 		beforeCreate(){
 			//不能获取data $data
+			console.log($data);
 		},
 		created(){
 			//可以拿到data
@@ -253,6 +281,8 @@
 
 ##  八:计算属性和侦听器
 ####	1:computed//计算属性,可以使用多个属性得到一个新的属性,计算属性不是data里面的属性,定义在data的外面 
+	{{person}}
+	{{person()}}
 	const vm=new Vue({
 		el:'#app',
 		data:{
@@ -266,14 +296,14 @@
 			}
 		},
 		computed:{
-			person(){//{{person}} 这样可以调用.如果数据不修改,则不会执行该舒心
+			person(){//{{person}} 这样可以调用.如果数据不修改,则不会执行该属性
 				return `姓名+${this.name}+年龄+${this.age}`
 			},
 			person1:{
 				get(){
 					return this.n+this.n1;
 				},
-				set(val){
+				set(val){//虽然能检测到,但是还是不会去修改data的属性
 					const avg=val/2;
 					this.n=this.n1=avg;
 				}
@@ -281,7 +311,7 @@
 			
 		},
 		mounted(){
-			this.getPerson();
+			this.getPerson();//常规的函数方法
 		}
 		,
 		watch:{//不会再第一次渲染页面的执行,可以在首次加载的时候,手动触发
@@ -307,6 +337,8 @@
 	})
 	vm.$watch('name',()=>{
 		console.log('侦听name的变化');
+	},{
+	    immediate:true
 	})
 ####	1:计算属性computed和method区别,
 		computed,有缓存机制,数据发生改变才会触发,method没有缓存机制,每次都会触发
@@ -317,7 +349,7 @@
 
 ## 九:组件初识
 	Vue.components('hellow-word',{//,全局组件,在命名时候就算是使用大驼峰和小驼峰命名的时候,调用组件的时候还是使用中划线连接
-			data(){
+			data(){//data写成函数的形式,不会影响其它组件的属性,都在自己的作用域里面,因为函数建立了自己的作用域
 				return {
 					msg:'hellow world'
 				}
@@ -337,10 +369,18 @@
 			}
 		})
 ## 十:组件传递数据和属性校验
+    <div id="app">
+        <my-content a="1" b="2" :title="title" :content="content" :count="count"></my-content>
+    </div>
 	const vm=enw Vue({
 		el:'#app',
+		data:{
+		    title:'title',
+		    content:'content',
+		    count:'count'
+		}
 		components:{
-			props:['a','b'],组件使用到的属性,这些属性不会保留到组件上,
+			props:['title','content','count'],组件内部注册的属性,这些属性不会保留到组件渲染后的html行间属性上,如果未注册的,则会留在上面
 			prop:{
 				content:{
 					type:Array,
@@ -360,14 +400,17 @@
 				}
 			}
 			myContent:{
-				template:'<div><h3><p></p></h3></div>'
+				template:'<div><h3>{{title}}</h3><p>{{count}}</p></div>'
 			}
 		}
 	})
 ## 十一:组件间通信
 ###  1:父组件向子组件传值 
 		方法:属性,$parent,provide
-####		1:父组件向子组件传值,$atrr获得所有的绑定属性,$parent父组件实例,可以链式调用,$parent.$parents,子组件是在挂载完以后才出现的,
+####	1:父组件向子组件传值,$atrr(不推荐使用,推荐使用属性)获得所有的绑定属性
+          <div id="app">
+                <my-content a="1" b="2" :title="title" :content="content" :count="count"></my-content>
+            </div>
 			const vm=enw Vue({
 				el:'#app',
 				data:{
@@ -375,67 +418,88 @@
 					title:'我是标题'
 				}
 				components:{
-					props:['a','b'],组件使用到的属性,这些属性不会保留到组件上,
-					prop:{
-						content:{
-							type:Array,
-							default:()=>[1,2,3]//当属性类型是Array或者是对象的时候,设置默认值必须是一个函数返回默认值
-						},
-						title:{
-							type:String,
-							required:true,//必填属性
-							default:'默认值'
-						},
-						count:{
-							type:number;
-							validator(value)=>{
-								return value>=10;
-							},
-							required:true;
-						}
+                        myContent:{
+                             props:['title'],
+                             created(){
+                                console.log($attrs);
+                             },
+                            inheritAttrs:false,//没有被注册的属性,不会在行间显示
+                            template:`<div>
+                                <h3>{{title}}</h3>
+                                <my-p v-bind="$attrs"></my-p>
+                            </div>`,
+                            components:{
+                                myP:{
+                                     props:['content'],
+                                     template:`<p>{{content}}</p>`
+                                }
+                            }
+                        }
 					}
-					myContent:{
-						inheritAttrs:false,//没有被注册的属性,不会在行间显示
-						template:'<div><h3><p></p></h3></div>'
-					}
+					
 				}
 			})
 
+### 2:$parent(不推荐使用,推荐使用属性)父组件实例,可以链式调用,$parent.$parents,$.children可以获取子组件的实例,子组件是在挂载完以后才出现的,
+      <div id="app">
+            <my-content></my-content>
+        </div>
+        const vm=enw Vue({
+            el:'#app',
+            data:{
+                content:'我是内容,我是内容,我是内容我是内容我是内容',
+                title:'我是标题'
+            }
+            components:{
+                    myContent:{
+                         created(){
+                            console.log(this.$parent.title);
+                         },
+                         mounted(){
+                            console.log(this.$chidren);
+                         },
+                        template:`<div>
+                            <h3>{{title}}</h3>
+                            <my-p></my-p>
+                        </div>`,
+                        components:{
+                            myP:{
+                                created(){
+                                  this.content=this.#parent.$parent.content
+                                }
+                                 template:`<p>{{content}}</p>`
+                            }
+                        }
+                    }
+                }
+                
+            }
+        })
+####		2:provide (不推荐使用,推荐使用属性)共享属性,子组件和后代组件都可以使用inject来使用属性
 
-####		2:provide 共享属性,子组件和后代组件都可以使用
-
-		const vm=enw Vue({
+		const vm=new Vue({
 				el:'#app',
 				provide:{
 					content:'我是内容,我是内容,我是内容我是内容我是内容',
 					title:'我是标题'
 				}
-				components:{
-					props:['a','b'],组件使用到的属性,这些属性不会保留到组件上,
-					prop:{
-						content:{
-							type:Array,
-							default:()=>[1,2,3]//当属性类型是Array或者是对象的时候,设置默认值必须是一个函数返回默认值
-						},
-						title:{
-							type:String,
-							required:true,//必填属性
-							default:'默认值'
-						},
-						count:{
-							type:number;
-							validator(value)=>{
-								return value>=10;
-							},
-							required:true;
-						}
-					}
-					myContent:{
-						inheritAttrs:false,//没有被注册的属性,不会在行间显示
-						inject:['title']//可以拿到provide里面的title的数据
-						template:'<div><h3><p></p></h3></div>'
-					}
-				}
+                  components:{
+                        myContent:{
+                            inject:['title'],
+                            template:`<div>
+                                <h3>{{title}}</h3>
+                                <my-p></my-p>
+                            </div>`,
+                            components:{
+                                myP:{
+                                    inject:['content'],
+                                     template:`<p>{{content}}</p>`
+                                }
+                            }
+                        }
+                    }
+                    
+                }
 			})
 ###		2:子组件向父组件传值  $children拿到子组件的实例,可以链式调用,
 			方法:$chiildren,$refs,$listeners,$emit(),@click.native

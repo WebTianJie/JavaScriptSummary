@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>自定义指令</title>
+    <script src="../js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <input type="text" v-phone="contents">
+    {{contents}}
+</div>
+</body>
+<script>
+    Vue.directive('phone',{
+        bind(el,bindings,vnode){
+            const content=vnode.context[bindings['expression']];
+            el.value=content;
+            el.oninput=function(e){
+                vnode.context[bindings['expression']]=e.target.value;
+            }
+        },
+        update(el,bindings,vnode){
+            const content=vnode.context[bindings['expression']];
+            el.value=content;
+        },
+        insert(el,bindings,vnode){
+            el.focus();
+            console.log("insert",el,bindings,vnode);
+        }
+    })
+    let app=new Vue({
+        el:'#app',
+        data:{
+            contents:'jkshfkahfkj'
+        }
+    })
+</script>
+</html>

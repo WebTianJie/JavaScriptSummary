@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue computed和watch</title>
+    <script src="../js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+<!--        {{person()}}-->
+        {{person}}
+</div>
+</body>
+<script>
+    const app=new  Vue({
+        el:'#app',
+        data:{
+            name:'北冥',
+            age:'13',
+            p:'datap'
+        },
+        methods:{
+          // person(){
+          //     return this.name+this.age;
+          // }
+        },
+        computed:{
+            // person(){
+            //     return '姓名:'+this.name+'   年龄:'+this.age;
+            // }
+            person:{
+                get(val){
+                    console.log('computed get',val);
+                    return '姓名:'+this.name+'   年龄:'+this.age+1; //这里的age改变,但是原始数据的data里面的age还是不变
+                },
+                set(val){//虽然能检测到,但是还是不会去修改data的属性
+                   console.log('computed set',val);
+                    this.age=161;
+                }
+            }
+        },
+        watch:{
+            // name(newName){
+            //     console.log('name:'+newName+'发生了变化');
+            // }
+            name:{
+                handler(newName){
+                    console.log('watch name:'+newName+'发生了变化');
+                },
+                immediate:true
+            }
+        },
+        beforeCreate(){
+            console.log('beforeCreate',this.$el,this.$data);
+        },
+        created(){
+            console.log('created',this.$el,this.$data);
+        },
+        beforeMount(){
+            console.log('beforeMount',this.$el,this.$data);
+        },
+        mounted(){
+            console.log('mounted',this.$el,this.$data);
+        },
+        beforeUpdate(){
+            console.log('beforeUpdate',this.$el,this.$data);
+        },
+        updated(){
+            console.log('update',this.$el,this.$data);
+        },
+        beforeDestroy(){
+            console.log('beforeDestroy',this.$el,this.$data);
+        },
+        destroyed(){
+            console.log('destroyed',this.$el,this.$data);
+        }
+    })
+</script>
+</html>
