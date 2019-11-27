@@ -506,8 +506,8 @@
 			<div ref="dom"></div>
 			<my-content @click.natvie="func"></my-content>//组件普通的绑定事件无法生效,通过@click.native可以把组件变成原生的dom元素,可以触发事件,不推荐使用
 			<my-content @click="func"></my-content>
-####			1:ref  
-			所有通过v-on绑定事件都放在$listeners里面,this.$emit('click',msg);//msg是传递的参数,可以触发自定义事件
+####			1:ref   $ref只能活到绑定该属性的最后一元素,如果是通过for循环添加的属性,保存多个dom元素到数组中,如果ref属性在组件上,则可拿到组件的vue的实例
+		     	所有通过v-on绑定事件都放在$listeners里面,this.$emit('click',msg);//msg是传递的参数,可以触发自定义事件
 				const vm=new Vue({
 						el:'#app',
 						provide:{
@@ -532,11 +532,16 @@
 									},
 									handleClick(){
 										console.log(this.$listeners);
-										this.$listeners.click();//执行的是父组件的函数
-										this.$emit('click','传值给父组件');主动触发事件
+										this.$listeners.click('$listener的方法');//执行的是父组件的函数
+										this.$emit('click','$emit传值给父组件');主动触发事件
 									}
 								},
-								template:'<div><h3><p @click="handleClick"></p><button v-on="$listeners"></button></h3></div>' $listeners会把父组件所有的事件绑定在子组件上,不能传递参数呢
+								template:'<div>
+                                    <h3>
+                                        <p @click="handleClick"></p>
+                                        <button v-on="$listeners"></button>//这样的方法,只能触发事件,不能传递参数,而且会触发所有通过v-on绑定的事件
+                                    </h3>
+								</div>' $listeners会把父组件所有的事件绑定在子组件上,不能传递参数呢
 							}
 						}
 					})
@@ -544,45 +549,48 @@
 ###	3:组件兄弟间传递数据;
 	 1:event bus事件总线
 	 2:vue实例
-		Vue.prototype.bus=new Vue();
-		 
-		const vm=new Vue({
-			el:'#app',
-			components:{
-				con:{
-					data(){
-						return {
-							content:'con1'
-						}
-					},
-					created(){
-						this.bus.$on('click',content=>{
-							conssole.log(content);
-							this.content=content;
-						})
-					}
-					,
-					template:'<div class="content">{{content}}</div>'
-				},
-				con1:{
-					data(){
-						return inputVlue:'';
-					},
-					methods:{
-						this.bus.$emit('click',this.inputValue);
-					}
-					template:'<div class="content">
-					 <input type="text" v-model="inputVal"/>
-					 <button @click="handleClick">提交</button>
-					</div>'
-				}
-			}
-		})
+		  Vue.prototype.bus = new Vue();
+            const vm = new Vue({
+                el: '#app',
+                components: {
+                    con: {
+                        data() {
+                            return {
+                                content: 'con1'
+                            }
+                        },
+                        created() {
+                            this.bus.$on('click', content => {//监听click事件
+                                console.log(content);
+                                this.content = content;
+                            })
+                        }
+                        ,
+                        template: '<div class="content">{{content}}</div>'
+                    },
+                    con1: {
+                        data() {
+                            return {
+                                inputValue: ''
+                            }
+                        },
+                        methods: {
+                            handleClick() {
+                                this.bus.$emit('click', this.inputValue);
+                            }
+                        },
+                        template: '<div class="content">\
+                          <input type="text" v-model="inputValue"/>\
+                        <button @click="handleClick">提交</button>\
+                       </div>'
+                    }
+                }
+            })
 ### 3:组件双向通信
 	1:<my-con :value="count" @input="handleInput" ></my-con>
-	2:<my-con v-model="count" ></my-con>
+	2:<my-con v-model="count" ></my-con>(相当于:value+@input)
 	3:<my-con :value="count" @update:value="handleInput" ></my-con>
-	4:<my-con :value.sync="count" ></my-con> 相当于第三种写法
+	4:<my-con :value.sync="count" ></my-con> 相当于第三种写法(update+@update:value)的语法糖
 	Vue.component('mycon',{
 		props:['value'],
 		mounted(){
@@ -607,10 +615,12 @@
 	})
 
 
-## 十二:插槽
+## 十二:插槽  使用的时候,没有被命名插槽包围的内容都会在默认插槽中显示
 ```
 <my-button type="success" content="成功按钮">自由定义的文字
-	<template v-slot:second></template>//绑定使用命名的插槽,v-slot:简写是一个#
+      默认插槽
+	<template v-slot:second></template>//绑定使用命名的插槽,v-slot:简写是一个# #second
+     默认插槽
 </my-button>
  const vm=new Vue({
 	 el:'#app',

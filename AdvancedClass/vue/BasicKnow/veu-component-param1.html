@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>子组件和子组件之间的通信</title>
+    <script src="../js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <con></con>
+    <con1></con1>
+</div>
+</body>
+<script>
+    Vue.prototype.bus = new Vue();
+    const vm = new Vue({
+        el: '#app',
+        components: {
+            con: {
+                data() {
+                    return {
+                        content: 'con1'
+                    }
+                },
+                created() {
+                    this.bus.$on('click', content => {//监听click事件
+                        console.log(content);
+                        this.content = content;
+                    })
+                }
+                ,
+                template: '<div class="content">{{content}}</div>'
+            },
+            con1: {
+                data() {
+                    return {
+                        inputValue: ''
+                    }
+                },
+                methods: {
+                    handleClick() {
+                        this.bus.$emit('click', this.inputValue);
+                    }
+                },
+                template: '<div class="content">\
+                  <input type="text" v-model="inputValue"/>\
+                <button @click="handleClick">提交</button>\
+               </div>'
+            }
+        }
+    })
+</script>
+</html>

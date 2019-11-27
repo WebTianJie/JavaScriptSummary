@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>子组件想父组件通信</title>
+    <script src="../js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+<!--    <my-content ref="dom"></my-content>-->
+<!--    <li v-for="item in 5"> <my-content ref="dom"></my-content></li>-->
+    <my-content @click="func" @mousedown="down" ></my-content>
+</div>
+</body>
+<script>
+    const vm=new Vue({
+        el:'#app',
+        methods:{
+            func(data){
+                console.log('click',data);
+            },
+            down(data){
+                console.log('mouse');
+            }
+        },
+        mounted(){
+            console.log(this.$refs.dom);//拿到绑定ref属性的元素,当有多个带有ref属性的元素,只会拿到一个,如果是通过for循环生成的元素,可以全部拿到,ref在子组件上,就可以拿到子组件的实例
+        },
+        components:{
+            myContent:{
+                data(){
+                    return {
+                        msg: ''
+                    }
+                },
+                methods:{
+                    cmpFunc(){
+                        console.log('cmp');
+                    },
+                    handleClick(){
+                        console.log(this.$listeners);
+                        // this.$listeners.click('$listener传递过来的msg');//执行的是父组件的函数
+                        // this.$emit('click','$emit传递过来的msg');//主动触发事件
+                    }
+                },
+                template:'<div>\
+                    <h3>\
+                    <p @click="handleClick">pbutton</p>\
+                    <button  v-on="$listeners">button</button>\
+                    </h3>\
+                    </div>' //$listeners会把父组件所有的事件绑定在子组件上,不能传递参数呢
+            }
+        }
+    })
+</script>
+</html>

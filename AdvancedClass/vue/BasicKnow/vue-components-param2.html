@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>子组件想父组件通信</title>
+    <script src="../js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <mycon :value="count" @input="handleInput" ></mycon>
+<!--    <my-con v-model="count" ></my-con>(相当于:value+@input)-->
+<!--    <my-con :value="count" @update:value="handleInput" ></my-con>-->
+<!--    <my-con :value.sync="count" ></my-con> 相当于第三种写法(update+@update:value)的语法糖-->
+</div>
+</body>
+<script>
+    Vue.component('mycon',{
+        props:['value'],
+        mounted(){
+            setInterval(()=>{
+                let value=this.value+1;
+                this.$emit('input',value);
+                // this.$emit('update:value',value);
+            },1000)
+        },
+        template:`<div>{{value}}</div>`
+    })
+    const vm=new Vue({
+        el:'#app',
+        methods:{
+            handleInput(value){
+                this.count=value
+            }
+        },
+        data:{
+            count:300
+        }
+    })
+</script>
+</html>
