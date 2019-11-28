@@ -651,8 +651,9 @@
 1.:这里slot-scope就是使用vue的插槽
 2.:scope里面存储了两个值,scope.index,scope.row,前者是当前数据的index值,后者是一个对象里面包含了该条数据的所有的信息	
 ```
-## 十三:子组件和父组件传值 prop
+## 十三:子组件和父组件传值 prop  
 	子组件
+	子组件是可以引用自己的(递归效果),引用的时候,需要组件有name属性
 	<template>
 	  <div class="tag-input">
 	    <el-input
@@ -725,28 +726,32 @@
 		  创建项目的时候会涉及到很多选择,要注意区分
 #####		2:运行服务器 npm run serve
 #####		3:在项目的根文件夹下,可以添加vue.config.js作为自己对项目的配置文件(例如webpack的一些配置)
+#####    C:\Users\Administrator\.vuerc 文件可修改项目的预设配置,比如默认的安装工具(bebel,eslinke)
 ####	2:vue ui 可以在线图形化管理界话创建项目
 ####	3:路由 router
+        路由的两种模式:
+        哈希模式: 不会刷新页面
+        历史模式: 地址栏不出现#号
 		添加路由 vue add router 
 		linkExactActiveClass: 'active-exact',当前路由包含该路由就渲染的当前样式
 		linkActiveClass: 'active',当前路由,完全匹配才渲染的路由样式
-		routes: [
-		  {
-		    path: '/',
-		    name: 'home',
-		    component: Home
-		  },
-		  {
-		    path: '/about',
-		    name: 'about',
-		    // route level code-splitting
-		    // this generates a separate chunk (about.[hash].js) for this route
-		    // which is lazy-loaded when the route is visited.
-		    component: function () { //这是为了懒加载,加快第一页面的加载速度,当组件被访问的时候才会加载
-		      return import(/* webpackChunkName: "about" */ './views/About.vue')
-		    }
-		  }
-		]
+		const routes = [
+		  mode:'history',//开始历史模式浏览器的导航里面不出现#号
+          {
+            path: '/',
+            name: 'home',
+            component: Home
+          },
+          {
+            path: '/about',
+            name: 'about',
+            // route level code-splitting
+            // this generates a separate chunk (about.[hash].js) for this route
+            // which is lazy-loaded when the route is visited.
+            //这是为了懒加载,加快第一页面的加载速度,当组件被访问的时候才会加载
+            component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+          }
+        ]
 ####	4:使用路由器 tag规定router-link用什么标签来渲染,router-view路由连接要显示的区域
 		<div id="app">
 		<div class="header">
@@ -761,9 +766,45 @@
 		<router-view class="view" />
 	  </div>
 		注意:页面级组件放在view里面,在页面上引入的其它组件则放在components里面
+		{
+              path:'/comu',
+              name:'comu',
+              component: ()=>import('../views/Comu'),
+              redirect:'/academic',
+              children:[
+                {
+                  path: '/academic',
+                  name: 'academic',
+                  component: () => import('../components/comu/Academic')
+                },
+                {
+                  path: '/download',
+                  name: 'download',
+                  component: () => import('../components/comu/DownLoad')
+                },
+                {
+                  path: '/personal',
+                  name: 'personal',
+                  component: () => import('../components/comu/Personal')
+                },
+                {
+                    path:'/NotFound',
+                    component:()=>import('../components/comu/NotFound')
+                },
+                {
+                    path:'*',
+                    redirect(to){
+                        console.log(to);获取想要访问的信息
+                        if(to.path=='/'){
+                          return '/honme'
+                        }
+                    }
+                }
+              ]
 		注意:redirect:'/community/academic',当进入当前路由的时候,默认展示重定向后路由的信息
 ####	5:路由操作
 		this.$router.push(src);//
+		this.$router.push({'name':'home',path:'/home'})
 		[a,b,c]->[a,b,c,d]->回退->[a,b,c]->回到到c页面
 		this.$router.replace(src);//替换当前页面,如果回退的话,直接回退到上一个页面
 		[a,b,c]->[a,b,d]->回退->直接到b页面
