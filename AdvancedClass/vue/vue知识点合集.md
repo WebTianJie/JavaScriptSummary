@@ -865,9 +865,9 @@
 		},
 		先全局守卫->独享守卫->组件内守卫
 #### 全局守卫
-- beforeEach
-- beforeResolve
-- afterEach
+- beforeEach 进入所有的路由之前
+- beforeResolve 路由内的内容被解析完毕后,执行
+- afterEach  路由的内的所有内容都被解析完毕,加载完成
 
 #### 路由独享守卫
 - beforeEnter
@@ -924,14 +924,15 @@
 	===========================
 	this.$sotre.state.xxx 获取state里面的某个属性
 	import {mapState} from 'vuex' 导入,mapState对象 
-	mapState(['name','age','look');拿到vuex state里面的值 ,返回值是一个对象,正好对应计算属性
+	mapState(['name','age','look');拿到vuex state里面的值 ,返回值是一个对象,正好对应计算属性 如下
 		{
 			name:function(){},
 			age:function(){},
 			look:function(){}
 		}
+	在computed中使用
 	computed:{
-		...mapState('name','age','look')//三个点...计算符,拼接对象
+		...mapState('name','age','look')//三个点...计算符,拼接对象,解构对象
 	}
 	...mapState({
 		storeName:state=>state.name//修改vuex里面name的属性(解决和data里面name属性的冲突)
@@ -944,13 +945,15 @@
      person(state){
    		return `姓名:${state.name} 年龄:${state.age}`;
    	},
-   	newStudentList(state){
+   	newStudentList(state,getters){//这里传入getters可会获取getters里面的内容,例如 getters.person
    		 return state.studentlist.map(student=>`这是姓名${student.name} 这是年龄:${student.age}`)
    	}
    }
+   使用
    this.$store.getters.xxx 获取gettes里面的属性
    import {mapGetters} from 'vuex' 导入mapGetters
-   mapGetter(['newStudentList','person']);拿到vuex state里面的值 ,返回值是一个对象,正好对应计算属性
+    mapGetter(['newStudentList','person']);拿到vuex state里面的值 ,返回值是一个对象,正好对应计算属性
+    如下
    	{
 		person(){
 			return 'xxx'
@@ -959,8 +962,9 @@
 			return state.studentlist.map(student=>`这是姓名${student.name} 这是年龄:${student.age} 这是getters:${getters.person})`
 		}
    	}
+    在computed中使用
    computed:{
-   	...mapGetters('name','age','look')//三个点...计算符,拼接对象
+   	...mapGetters('name','age','look')//三个点...计算符,拼接对象,解构对象
    }
    ...mapGetters({
 		newPerson:'person'//修改vuex里面person的属性(解决和data里面name属性的冲突)
@@ -1058,6 +1062,11 @@
 			}
 		}
 ```
+### 调用muations,actions总结
+//this.$store.commit("changeStudentList",{tempObj,name:'重楼'});//严格模式下使用 ,mutations,不引入mapMutations时候使用, 不支持异步
+// this.changeStudentList({tempObj,name:'重楼'}); //mutations,引入mapMutations时候使用, 不支持异步
+// this.$store.dispatch('changeStudentList',{tempObj,name:'重楼'}); //actions 不引入maoState的时候使用
+//this.changeStudentList({tempObj,name:'重楼'});//actions 引入maoState的时候使用
 ## 二十:module
 ```
 state 会放入到每一个模块下面,getters,mutations,actions会直放到全局里面
