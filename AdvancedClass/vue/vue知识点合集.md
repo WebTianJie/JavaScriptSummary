@@ -281,6 +281,30 @@
 
 ##  八:计算属性和侦听器
 ####	1:computed//计算属性,可以使用多个属性得到一个新的属性,计算属性不是data里面的属性,定义在data的外面 
+    - 关于computed
+        计算属性，其中的配置会提升到vue实例中，因此，在模板中可以直接当作属性使用，使用时，实际上调用的是对应的方法。
+        通常，计算属性用户通过data或其他计算属性得到的数据。
+    
+        与方法的区别：
+        1）vue会检查计算属性的依赖，当依赖没有发生变化时，vue会直接使用之前缓存的结果，而不会重新计算
+        2）计算属性的读取函数，不可以有参数
+        3) 计算属性可以配置get和set，分别用于读取时和设置时
+    
+    - 关于v-html指令
+        vue为了安全，会将元素内部的插值进行实体编码
+    
+    - 关于ES6模块化
+        面对大型项目，传统开发的问题：
+        1）如何管理错综复杂的代码
+        2）如何处理全局变量污染的问题
+        3）如何管理复杂的依赖关系
+    
+        实现模块化的方式：CommonJS、AMD、CMD、ES6
+        
+        ES6模块化：
+        - 模块中的所有变量，全部是布局，只能在模块内部使用
+        - 模块导出：export default 导出的数据
+        - 模块导入(在所有代码之前导入)：import 变量名 from "模块路径"
 	{{person}}
 	{{person()}}
 	const vm=new Vue({
@@ -348,6 +372,29 @@
 ####	3:数据查找顺序 data->methods->computed,在其中一个找到,就不会继续往下找
 
 ## 九:组件初识
+    
+1. 什么是组件
+
+组件是页面中的一个可复用的功能单元
+
+2. vue中的组件
+
+    组件的创建：组件对于开发者，是一个普通的配置对象，该配置对象几乎和之前学习的vue配置一致。
+    
+    组件的注册：
+    1. 全局注册
+    2. 局部注册: 在使用的组件会vue实例配置中通过components注册
+    原则：除了全局通用的组件，并且经常用到的组件使用全局注册，否则尽量局部注册
+    
+    组件名称的规范，以下命名方式任选其一：
+    1. 使用短横线命名
+    2. 大驼峰命名法
+    
+    组件的使用：把组件当作标签使用即可，标签名任选其一
+    1. 短横线命名法
+    2. 大驼峰命名法
+    
+    组件可以嵌套重复使用，因此，会形成一个组件树，树的根叫做根组件
 	Vue.components('hellow-word',{//,全局组件,在命名时候就算是使用大驼峰和小驼峰命名的时候,调用组件的时候还是使用中划线连接
 			data(){//data写成函数的形式,不会影响其它组件的属性,都在自己的作用域里面,因为函数建立了自己的作用域
 				return {
@@ -1149,7 +1196,7 @@ export default{
 	可以通过mapxxx的方可以拿到getters,mutations,action,但是拿不到state,如果想通过这样的方式获取state,需要在添加命名空间
 	namespaced:true(在每一个模块的state的文件里面)
 	```
-### 获取cuex中的数据 有namespaced情况
+### 获取vuex中的数据 有namespaced情况
 	```
 	获取state:this.$store.state.moduleName.xxx  {{$store.state.learn.courseName}}
 	获取getters:this.$store['moduleName/getters'].xxx this.$store['learn/getters'].coursePrice  
@@ -1172,3 +1219,222 @@ export default{
 		},
 	}
 	```
+### 打包项目 npm run build
+打包设置
+const path=require('path');
+module.exports={
+    //设置打包后的文件夹名字,
+    outputDir:'dist',
+
+    //设置静态资源文件夹
+    assetsDir:'assets',
+    // publicPath:process.env.NODE_ENV==='production' ? 'http://www.uguoba.com':'/',//设置公共的资源路径
+    //'是否需要打包出sourceMap sourceMap可以为我们js报错找到真实报错信息',
+    productionSourceMap:false,
+    chainWebpack:config=>{
+        config.resolve.alias.set('_v',path.resolve(__dirname,'src/views')) //设置简写的文件夹路径
+    },
+
+    configureWebpack:{//此处可以设置webpack的相关配置信息
+        // plugin:[],
+        // module:[]
+    },
+
+    devServer:{//跨域配置
+        proxy:{
+            '/login':{
+                target:'http://www.uguoba.com/login',
+                changeOrigin: true,
+                pathRewrite:{
+                    '^/login':''
+                }
+            }
+        }
+    },
+
+    pluginOptions: {
+      'style-resources-loader': {//在每一个文件里面都使用到的的公共css
+        preProcessor: 'less',
+        patterns: [
+            path.resolve(__dirname,'src/assets/styles/common.less')
+        ]
+      }
+    }
+}
+
+#单元测试
+单元测试是对软件中最下小的可测试单元进行检查和验证;
+测试工具
+    # mocha+chai
+    
+    - mocha：测试框架
+      > vue脚手架内部就安装好了，不需要再次引入
+      
+      > 自己安装：mocha mocha-webpack
+    
+    - chai：断言库，断定左边的和右边的是否相等
+      > 三种断言风格：should、expect、assert
+      
+      > www.chaijs.com
+    
+    ## 用法
+    
+    - 套件
+      > describe('套件名字', () => {})
+      - 生命周期
+        > before(()=>{}) 调用该套件的所有测试用例之前执行且只执行一次
+    
+        > after(()=>{}) 调用该套件的所有测试用例之后执行且只执行一次
+    
+        > beforeEach(()=>{}) 调用该套件的每个测试用例之前执行，有几个测试用例就执行几次
+    
+        > afterEach(()=>{}) 调用该套件的所有测试用例之后执行，有几个测试用例就执行几次
+    
+    - 用例
+      > it('用例名字', done => {}) 
+      - done 
+        > done函数被调用的时候，才能完成测试
+    
+    ### chai的基本用法
+    
+    * 判断相等
+      > 判断基本类型 expect(1).to.be.equal(1); 
+    
+      > 判断引用类型：expect({a: 1}).to.be.deep.equal({a: 1})   /   expect({a: 1}).to.be.eql({a: 1}) 
+    
+      > deep标记：该标记可以让其后的断言不是比较对象本身，而是递归比较对象的键值对
+    
+    * 判断不等
+      > expect(2).to.be.not.equal(1);
+    
+    * 判断大于
+      > expect(10).to.be.above(5);
+    
+      > expect(10).to.be.greaterThan(5);
+    
+    
+    * 判断小于
+      > expect(5).to.be.below(10);
+    
+      > expect(5).to.be.lessThan(10);
+    
+    * 判断大于等于
+      > expect(10).to.be.at.least(10);
+    
+      > expect(10).to.be.not.lessThan(10);
+    
+    * 判断小于等于
+      > expect(5).to.be.at.most(5);
+    
+      > expect(5).to.be.not.greaterThan(5);
+    
+    * 判断长度
+      > expect([1, 2, 3]).to.be.lengthOf(3);
+    
+    * 判断为truthy，(除了false、undefined、null、正负0、NaN、""的值)
+      > expect(1).to.be.ok;
+    
+    * 判断为true、false、null、undefined、NaN
+      > expect(true).to.be.true;
+    
+      > expect(false).to.be.false;
+    
+      > expect(null).to.be.null;
+    
+      > expect(undefined).to.be.undefined;
+    
+      > expect(NaN).to.be.NaN;
+    
+    * 判断包含
+      > expect('shanshan').to.be.include('s'); 包含
+    
+      > expect('shanshan').to.be.contain('s'); 包含
+    
+      > expect('shanshan').to.be.match(/s/); 匹配
+    # sinon 
+    > 辅助我们进行前端测试。
+    
+    > 安装：npm install sinon -D
+    
+    > 引入: import sinon from 'sinon';
+    
+    ## spy 间谍函数
+    
+    > const spy = sinon.spy();
+    
+    - 使用方法
+      > spy.called; 表示函数是否被调用,返回布尔值
+    
+      > spy.callCount; 函数被调用的次数
+    
+      > spy.calledOnce; 函数只被调用了一次，返回布尔值
+    
+      > spy.calledTwice; 函数被连续调用了两次，返回布尔值
+    
+      > spy.calledThrice; 函数被连续调用了三次，返回布尔值
+    
+      > spy.firstCall; 函数第一次被调用。返回布尔值
+    
+      > spy.secondCall; 函数第二次被调用。返回布尔值
+    
+      > spy.thirdCall; 函数第三次被调用。返回布尔值
+    
+      > spy.lastCall; 函数最后一次被调用。返回布尔值
+    
+      > spy.calledOn('xxx');  调用函数时，函数的this至少有一次是xxx，返回布尔值。
+    
+      > spy.alwaysCalledOn('xxx');  调用函数时，函数的this始终是xxx，返回布尔值。
+    
+      > spy.calledWidth(1, 2, 3); 函数至少被调用一次，且参数包含1, 2, 3,返回布尔值。
+    
+      > spy.calledOnceWith(1, 2, 3); 函数只被调用一次，且参数包含1, 2, 3,返回布尔值。
+    
+      > spy.alwaysCalledWith(1, 2, 3); 函数被调用时传的参数始终包括1,2,3，返回布尔值。
+    
+      > spy.calledWithExactly(1, 2, 3); 函数至少被调用一次，且参数只为1,2,3，返回布尔值。
+    
+      > spy.alwaysCalledWithExactly(1, 2, 3); 函数被调用时传的参数始终只为1,2,3，返回布尔值。
+    
+      > spy.calledWithNew(); 函数被作为构造函数new,返回布尔值。
+    
+      > spy.neverCalledWith(1, 2, 3); 函数执行时，参数从不为1, 2, 3。返回布尔值。
+    
+      > spy.threw(); 函数执行时，抛出一个异常。返回布尔值。
+    
+      > spy.threw("TypeError"); 函数执行时，至少抛出一次TypeError异常。返回布尔值。
+    
+      > spy.threw('xxx'); 函数执行时，至少抛出一次xxx异常。返回布尔值。
+    
+      > spy.alwaysThrew(); 函数执行时，始终抛出异常。返回布尔值。
+    
+      > spy.alwaysThrew("TypeError"); 函数执行时，始终抛出TypeError异常。返回布尔值。
+    
+      > spy.alwaysThrew('xxx'); 函数执行时，失踪抛出xxx异常。返回布尔值。
+    
+      > spy.returned('xxx'); 函数执行时，至少返回一次xxx。返回布尔值。
+    
+      > spy.alwaysReturned('xxx'); 函数执行时，始终返回'xxx'。返回布尔值。
+    
+      > spy.getCall(n); 返回函数被第n次调用。
+    
+      > spy.getCalls(); 返回一个函数被调用的数组。
+    
+      > spy.thisValues; 返回函数被调用时this指向的集合, 值类型为数组。
+    
+      > spy.args; 返回函数被调用时参数，值类型为数组。
+    
+      > spy.exceptions; 返回函数被调用时抛出的异常集合. 值类型为数组。
+    
+      > spy.returnValues; 返回函数被调用时返回的值，值类型为数组。
+           
+ # jest
+ - 匹配语法
+   > https://jestjs.io/docs/zh-Hans/using-matchers
+ 
+ - mock函数
+   > https://jestjs.io/docs/zh-Hans/mock-functions
+
+
+思想升级
+for循环的时候,如果有事件,需要对对象进行单独的操作,可以把单个对象放进去
+  
