@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<button id="btn">弹框</button>
+</body>
+<script>
+    var btnObj=document.getElementById('btn');
+    var CreateAlert=function(text){
+        var dom=document.createElement('div');
+        dom.innerHTML=text;
+        document.body.append(dom);
+        return dom;
+    }
+
+    function CreateSinge(func){
+        var result=null;
+        return function(){
+            if(result){
+                return  result;
+            }
+            result=func.apply(this,arguments);
+            return  result;
+        }
+    }
+    var sinleAlert=CreateSinge(CreateAlert);
+    btnObj.onclick=function(){
+        sinleAlert('我是弹框');
+    }
+</script>
+</html>

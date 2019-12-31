@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>验证控件</title>
+</head>
+<body>
+    用户名: <input type="text" id="userName" name="username">
+    <span id="showNameError"></span>
+    密码: <input type="password" id="userPwd" name="userpwd">
+    <span id="showPwdError"></span>
+    邮箱: <input type="text" id="userEmail" name="userEmail">
+    <span id="showEmailError"></span>
+    <button id="submit">提交</button>
+</body>
+<script>
+    var oName=document.getElementById('userName');
+    var oPwd=document.getElementById('userPwd');
+    var oBtn=document.getElementById('submit');
+    var eName=document.getElementById('showNameError');
+    var ePwd=document.getElementById('showPwdError');
+    var oEmail=document.getElementById('userEmail');
+    var eEmail=document.getElementById('showEmailError');
+    oBtn.onclick=function () {
+        ProxRequest();
+    }
+    function Request() {
+        console.log('send');
+    }
+    
+    function Validator() {
+        this.cache=[];
+        this.errDom=[];
+    }
+    var validator=new Validator();
+    Validator.prototype.strategies={
+        isNotNull:function (value,errMsg){
+            if(value == ''){
+                return errMsg;
+            }
+            return true;
+        },
+        maxLength:function (value,length,errMsg){
+            if(value != '' && value.length > length){
+                return  errMsg;
+            }
+            return true;
+        },
+        minLength:function (value,length,errMsg) {
+            if(value != '' && value.length < length){
+                return  errMsg;
+            }
+            return  true;
+        }
+    }
+    Validator.prototype.add=function (dom,errDom,strategys) {
+        var  self=this;
+        self.errDom.push(errDom);
+        strategys.forEach(function (ele,index){
+            self.cache.push(function (){
+                var  arr=ele.strategy.split(':');
+                var  type=arr.shift();
+                arr.unshift(dom.value);
+                arr.push(ele.errMsg);
+               var msg=self.strategies[type].apply(this,arr);
+               if(msg != true){
+                   errDom.innerHTML=msg;
+               }
+               return msg;
+            })
+        })
+    }
+    Validator.prototype.start=function (){
+        this.errDom.forEach(function(ele,index){
+            ele.innerHTML='';
+        })
+        var  flag=true;
+        this.cache.forEach(function (ele){
+            if(ele() !=true){
+                flag=false;
+            }
+        })
+        return  flag;
+    }
+    Validator.prototype.extend=function (config) {
+        for(var pop in config){
+            Validator.prototype.strategies[pop]=config[pop];
+        }
+    }
+    validator.extend({
+        isEmail:function(value,errMsg){
+            if(value.length!=''&&value.indexOf('@')==-1){
+                return errMsg;
+            }
+            return true;
+        }
+    })
+    var  ProxRequest=(function(){
+        validator.add(oName,eName,[
+            {strategy:'isNotNull',errMsg:'用户名不能为空'},
+            {strategy: 'maxLength:6',errMsg: '用户名最大长度为6'}
+        ]);
+        validator.add(oPwd,ePwd,[
+            {strategy:'isNotNull',errMsg:'密码不能为空'},
+            {strategy: "minLength:6",errMsg: '密码最小长度为6'}
+        ]);
+        validator.add(oEmail,eEmail,[
+            {strategy:'isNotNull',errMsg:'邮箱不能为空'},
+            {strategy:'isEmail',errMsg:'邮箱格式不正确'}
+        ])
+        return function (){
+            if(validator.start()==true){
+                Request();
+            }
+        }
+    })()
+</script>
+</html>

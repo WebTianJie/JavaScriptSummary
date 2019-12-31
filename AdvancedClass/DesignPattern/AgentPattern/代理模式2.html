@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+    var Deng={
+        flower:'rose',
+        sendFlower:function (target){
+            target.receiveFlower(this.flower);
+        }
+    }
+    var proxyCheng={
+        proxySend:function(target){
+           this.listenMood(target,function(){
+               Deng.sendFlower(tatget)
+           })
+        },
+        listenMood:function (target,cb) {
+            var timer=setInterval(function () {
+                if(goldNess.mood > 0.5){
+                    Deng.sendFlower(goldNess);
+                    clearInterval(timer)
+                }
+            },300)
+        }
+    }
+    var  goldNess={
+        mood:null,
+        changeMood:function(){
+            this.mood=Math.random() > 0.5;
+        },
+        receiveFlower:function(flower){
+            this.mood > 0.5 ? console.log('ok') : console.log('滚');
+        },
+        createMood:function(){
+            var self=this;
+            self.changeMood();
+            setInterval(function () {
+               self.changeMood();
+            },300)
+        }
+    }
+    goldNess.createMood();
+    proxyCheng.proxySend(goldNess);
+</script>
+</html>

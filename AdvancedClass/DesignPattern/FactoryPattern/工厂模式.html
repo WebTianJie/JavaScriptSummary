@@ -82,34 +82,34 @@
 			return newPLane;
 		}
 		//定义子类工厂
-		PlaneFactory.prototype.SmailPlane = function(x,y) {
+		PlaneFactory.prototype.SmallPlane = function(x,y) {
 			this.x=x;
 			this.y=y;
-			this.width= 100,
-			this.height=100,
-			this.blood=100,
+			this.width= 100;
+			this.height=100;
+			this.blood=100;
 			this.name= 'SmailPlane'
 		}
 		PlaneFactory.prototype.BigPlane = function(x,y) {
 			this.x=x;
 			this.y=y;
-			this.width= 150,
-			this.height=150,
-			this.blood=150,
+			this.width= 150;
+			this.height=150;
+			this.blood=150;
 			this.name= 'BigPlane'
 		}
 		PlaneFactory.prototype.AttackPlane = function(x,y) {
 			this.x=x;
 			this.y=y;
-			this.width= 200,
-			this.height=200,
-			this.blood=200,
+			this.width= 200;
+			this.height=200;
+			this.blood=200;
 			this.name= 'AttackPlane'
 			this.attack= function() {
 				console.log('biubiubiubiu');
 			}
 		}
-		var sPlane=PlaneFactory.create('SmailPlane',10,20);
+		var sPlane=PlaneFactory.create('SmallPlane',10,20);
 		var bPlane=PlaneFactory.create('BigPlane',20,30);
 		var aPlane=PlaneFactory.create('AttackPlane',30,40);
 	</script>

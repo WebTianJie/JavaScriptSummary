@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>懒加载预加载</title>
+</head>
+<body>
+<div id="imgWrap"></div>
+</body>
+<script>
+    function MyImage(id){
+        var  oImage=new Image();
+        this.setSrc=function (src){
+            oImage.src=src;
+        }
+        document.getElementById(id).append(oImage);
+    }
+    var ProxyImage=(function(){
+        var oImg=new  Image();
+        var oMyImage=new MyImage('imgWrap');
+        oImg.onload=function () {
+            setTimeout(function(){
+                oMyImage.setSrc(oImg.src);
+            },3000)
+        }
+        return function (occupySrc,src) {
+            oImg.src=src;
+            oMyImage.setSrc(occupySrc)
+        }
+    })()
+    ProxyImage('https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1577264190927&di=82892cb34c69a614c31b2ec51d3e0917&imgtype=jpg&src=http%3A%2F%2Fimg3.imgtn.bdimg.com%2Fit%2Fu%3D1090316253%2C3203311802%26fm%3D214%26gp%3D0.jpg','https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1577858875&di=59dd36bd01f4a83cb932bd71a5e861be&imgtype=jpg&er=1&src=http%3A%2F%2Fpic.cn2che.com%2FEditors%2F2012-03%2F30%2F20120330130825528.jpg')
+</script>
+</html>

@@ -125,12 +125,17 @@
 				5:多套配置文件
 				        使用多个配置文件的两种方法
 						1:多个配置文件:webapck --config 配置文件名字
+						    webpack --config webpack-dev.config.js
+						    webpack --config webpack-prod.config.js
 						2:配置文件中配置:
-							  "scripts": {
+							   "scripts": {
 								    "test": "echo \"Error: no test specified\" && exit 1",
 								    "dev": "webpack --mode development",
-								    "prod": "webpack --mode production"
+								    "prod": "webpack --mode production",
+								     "server": webpack webpack-dev-server
 								  }
+								  npm run dev 开发环境
+								  npm run prod 生产环境
 										
 		
 		
